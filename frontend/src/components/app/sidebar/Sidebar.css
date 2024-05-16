@@ -1,0 +1,18 @@
+.App-sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 30vmin;
+    max-width: 250px;
+    margin-right: 10vmin;
+    padding: 10px;
+    border-radius: 50px;;
+    background-color:rgba(0, 255, 255, 0.428);
+}
+
+.Img {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 200px;
+  }

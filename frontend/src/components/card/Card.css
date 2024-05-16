@@ -1,0 +1,29 @@
+.Card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: rgba(0, 255, 255, 0.742);
+    margin: 10px;
+    padding: 1vh;
+    font-size: calc(6px + 2vmin);
+    margin-bottom: 30px;
+    border-radius: 30px;
+    transition: transform 0.3s ease-in;
+    color: rgb(2, 3, 33);
+  }
+
+  .Card:hover {
+    transform: scale(1.01);
+  }
+
+  .ImageWrapper {
+    min-height: 80%;
+    border-radius: 30px;
+    border-color: rgb(47, 224, 224);
+    border-style: solid;
+    background-image: url('../../loading.gif');
+    background-size: 100%;
+    background-color: aliceblue;
+    background-position-y: center;
+    background-repeat: no-repeat;
+  }

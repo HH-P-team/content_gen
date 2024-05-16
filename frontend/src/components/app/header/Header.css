@@ -1,0 +1,17 @@
+.App-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #430b84b9;
+    font-size: calc(10px + 2vmin);
+    /* width: 50vmax; */
+    height: 15vmin;
+    color: white;
+    border-radius: 50px;
+    padding-top: auto;
+    padding-bottom: auto;
+    padding-left: 5vmin;
+    padding-right: 5vmin;
+  }
+  
