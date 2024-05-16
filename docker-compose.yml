@@ -41,8 +41,22 @@ services:
       - 8000:8000
     networks:
       - backend
+      - frontend
+      
+  front:
+    container_name: front
+    build: ./frontend/
+    depends_on:
+      - api
+    ports:
+      - 8080:3000
+    networks:
+      - frontend
 
 networks:
   backend:
+    driver: bridge
+
+  frontend:
     driver: bridge
 
