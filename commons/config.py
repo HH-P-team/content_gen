@@ -12,32 +12,50 @@ class Settings(BaseSettings):
 
     mistral_api_key: str = Field(alias='MISTRAL_API_KEY')
 
-    pg_host: str = Field(alias="POSTGRES_HOST")
-    pg_user: str = Field(alias="POSTGRES_USER")
-    pg_password: str = Field(alias="POSTGRES_PASSWORD")
-    pg_database: str = Field(alias="POSTGRES_DB_NAME")
-    pg_port: int = Field(alias="POSTGRES_PORT")
+    pg_host: str = Field(alias='POSTGRES_HOST')
+    pg_user: str = Field(alias='POSTGRES_USER')
+    pg_password: str = Field(alias='POSTGRES_PASSWORD')
+    pg_database: str = Field(alias='POSTGRES_DB_NAME')
+    pg_port: int = Field(alias='POSTGRES_PORT')
 
     database_uri: Union[PostgresDsn, str] = Field(default='')
+    async_database_uri: Union[PostgresDsn, str] = Field(default='')
 
-    @field_validator("database_uri")
+    @field_validator('database_uri')
     def assemble_db_connection(
         cls, 
         value: Optional[str],
         info: FieldValidationInfo,
     ) -> Any:
         """Схема подключения к БД"""
-        if isinstance(value, str) and value == "":
+        if isinstance(value, str) and value == '':
             return PostgresDsn.build(
-                scheme="postgresql+psycopg2",
-                username=info.data["pg_user"],
-                password=info.data["pg_password"],
-                host=info.data["pg_host"],
-                port=info.data["pg_port"],
-                path=info.data["pg_database"],
+                scheme='postgresql+psycopg2',
+                username=info.data['pg_user'],
+                password=info.data['pg_password'],
+                host=info.data['pg_host'],
+                port=info.data['pg_port'],
+                path=info.data['pg_database'],
             )
         return value
     
+    @field_validator('async_database_uri')
+    def assemble_db_async_connection(
+            cls, value: Optional[str], info: FieldValidationInfo,
+    ) -> Any:
+        """Схема асинхронного подключения к БД"""
+        if isinstance(value, str) and value == '':
+            return PostgresDsn.build(
+                scheme='postgresql+asyncpg',
+                username=info.data['pg_user'],
+                password=info.data['pg_password'],
+                host=info.data['pg_host'],
+                port=info.data['pg_port'],
+                path=info.data['pg_database'],
+            )
+        return value
+    
+
 @lru_cache
 def get_settings() -> Settings:
     """

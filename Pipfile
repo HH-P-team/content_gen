@@ -14,6 +14,7 @@ alembic = "*"
 apscheduler = "*"
 pydantic-settings = "*"
 pydantic-core = "*"
+asyncpg = "*"
 
 [dev-packages]
 
