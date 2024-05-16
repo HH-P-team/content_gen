@@ -28,11 +28,5 @@ class Mistral(API):
     def send_message(self, message: str) -> str:
         """
         """
-        headers['Authorization'] = f'Bearer {self.api_key}'
         data['chat']['user_messange'] = message
-        resp = requests.post(url=URL, headers=headers, json=data)
-
-        if resp.status_code == 200:
-             return resp.json()[0]['message']['content']
-        else:
-            raise Exception(resp.text)
+        return self.send_post(URL, data)[0]['message']['content']
