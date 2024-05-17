@@ -1,8 +1,14 @@
 .env
+
 *.http
+*.log
+*.swp
 
+venv/
+env/
 /pgdata
-
+dbdata/
 __pycache__/
 
 node_modules/
+*.pyc

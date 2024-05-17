@@ -13,4 +13,4 @@ COPY ./backend .
 
 EXPOSE 8000
 
-CMD ["python", "start.py"]
+#CMD ["python", "start.py"]
