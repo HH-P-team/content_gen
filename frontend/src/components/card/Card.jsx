@@ -1,9 +1,11 @@
 import './Card.css';
 
+import ImageWrapper from './ImageWrapper';
+
 export default function Card(props) {
     return (
         <div className="Card">
-            <div className='ImageWrapper'></div>
+            <ImageWrapper message={props.name}/>
             <div>{props.name}</div>
         </div>
     );

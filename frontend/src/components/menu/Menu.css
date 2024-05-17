@@ -1,8 +1,13 @@
 .Menu {
     flex-grow: 1;
-    /* width: 30vmin; */
-    max-width: 250px;
-    /* height: 500px; */
+    /* max-width: 250px; */
+    padding: 20px;
     border-radius: 40px;
     background-color:rgba(0, 255, 255, 0.684);
+    opacity: 0.6;
+    transition: opacity 0.3s ease-in;
+}
+
+.Menu:hover {
+    opacity: 1;
 }

@@ -1,15 +1,28 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+import React, { useMemo } from 'react';
+import ReactDOM from 'react-dom/client';
+import { Provider, useSelector } from 'react-redux';
+import { RouterProvider } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
+import store from './store';
+import createRouter from './routes';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <Root />
+    </Provider>
   </React.StrictMode>
 );
+
+function Root() {
+	const role = useSelector((state) => state.user.role);
+	const router = useMemo(() => {
+		return createRouter(role);
+	}, [role]);
+	return <RouterProvider router={router} />;
+}
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

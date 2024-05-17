@@ -1,0 +1,15 @@
+.MenuButton {
+    margin-top: 20px;
+    padding: 30px;
+    border-radius: 20px;
+    font-size: calc(6px + 2vmin);
+    background-color:rgba(0, 179, 255, 0.936);
+    color: bisque;
+}
+
+.MenuButton:hover {
+    -webkit-animation: rubber 0.6s ease;
+    -moz-animation: rubber 0.6s ease;
+    -o-animation: rubber 0.6s ease;
+    animation: rubber 0.6s ease;
+  }
