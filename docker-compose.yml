@@ -35,6 +35,7 @@ services:
        - .env
     volumes:
       - ./commons:/opt/app/commons
+      - ./staticfiles:/opt/app/staticfiles
     depends_on:
       - db
     ports:
@@ -42,10 +43,12 @@ services:
     networks:
       - backend
       - frontend
-      
+
   front:
     container_name: front
     build: ./frontend/
+    env_file:
+       - .env
     depends_on:
       - api
     ports:
