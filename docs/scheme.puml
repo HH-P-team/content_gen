@@ -1,0 +1,54 @@
+@startuml
+
+
+actor User
+
+package "WEB server" {
+    [nginx]
+}
+
+package "Фронтенд" {
+    [Веб-интерфейс]
+    [Статические файлы]
+
+}
+
+package "Бэкенд" {
+    [Auth - service]
+    [WEB API]
+    [Бизнес логика]
+    [storage]
+}
+
+package "Система хранения данных"{
+    [WEB API DB mongo/es]
+    [fs??]
+    [cache]
+    [Auth DB - PG]
+}
+
+package "Нейрошлюз" {
+    [stable diffusion]
+    [mistral]
+}
+
+User --> [nginx]
+[nginx] --> [Веб-интерфейс]
+[nginx] --> [Статические файлы]
+
+[Веб-интерфейс] --> [WEB API]
+[Веб-интерфейс] --> [Auth - service]
+[Auth - service] --> [Auth DB - PG]
+[WEB API] --> [Бизнес логика]
+[WEB API] --> [Auth - service]
+[Бизнес логика] --> [stable diffusion]
+[Бизнес логика] --> [mistral]
+
+[Бизнес логика] -->  [storage]
+
+[storage] --> [WEB API DB]
+[storage] --> [cache]
+[storage] --> [fs??]
+
+
+@enduml 
