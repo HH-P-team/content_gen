@@ -1,5 +1,6 @@
 from commons.neuro_gateway.mistral import Mistral
 
+
 def get_products(api: Mistral, subject: str) -> str:
     """
     """

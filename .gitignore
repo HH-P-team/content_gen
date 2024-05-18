@@ -6,7 +6,7 @@
 
 venv/
 env/
-/pgdata
+/pgdata*
 dbdata/
 __pycache__/
 
