@@ -6,7 +6,7 @@ AUTH_HOST=fauth-service
 AUTH_PORT=8000
 
 POSTGRES_HOST=pg-auth
-POSTGRES_PORT=5432
+POSTGRES_PORT=5433
 POSTGRES_DB_AUTH_SCHEMA=auth
 POSTGRES_DB_AUTH=move_base
 POSTGRES_USER=student
@@ -24,12 +24,3 @@ REFRESH_TOKEN_EXPIRES_IN=60
 
 JWT_ALGORITHM=HS256
 JWT_SECRET_KEY=my_secret_key
-
-ADMIN_ACCESS_LEVEL = 5
-
-YA_CLIENT_ID=client_id
-YA_CLIENT_SECRET=secret
-YA_ACCESS_TOKEN_URL=https://oauth.yandex.ru/token
-YA_AUTHORIZE_URL=https://oauth.yandex.ru/authorize
-YA_API_BASE_URL=https://login.yandex.ru/
-YA_REDIRECT_URIS=url

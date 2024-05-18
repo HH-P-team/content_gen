@@ -1,30 +1,30 @@
 version: "3.8"
 
 services:
-  db:
-    container_name: ${POSTGRES_HOST}
-    image: postgres:latest
-    env_file:
-      - .env
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB_NAME}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_PORT: ${POSTGRES_PORT}
-      PGDATA: /var/lib/postgresql/data/pgdata
-    volumes:
-      - ./pgdata:/var/lib/postgresql/data/pgdata
-    healthcheck:
-      test: pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB_NAME}
-      interval: 10s
-      timeout: 30s
-      retries: 5
-      start_period: 30s
-    restart: unless-stopped
-    ports:
-      - 5432:${POSTGRES_PORT}
-    networks:
-      - backend
+  # db:
+  #   container_name: ${POSTGRES_HOST}
+  #   image: postgres:latest
+  #   env_file:
+  #     - .env
+  #   environment:
+  #     POSTGRES_DB: ${POSTGRES_DB_NAME}
+  #     POSTGRES_USER: ${POSTGRES_USER}
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  #     POSTGRES_PORT: ${POSTGRES_PORT}
+  #     PGDATA: /var/lib/postgresql/data/pgdata
+  #   volumes:
+  #     - ./pgdata:/var/lib/postgresql/data/pgdata
+  #   healthcheck:
+  #     test: pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB_NAME}
+  #     interval: 10s
+  #     timeout: 30s
+  #     retries: 5
+  #     start_period: 30s
+  #   restart: unless-stopped
+  #   ports:
+  #     - 5432:${POSTGRES_PORT}
+  #   networks:
+  #     - backend
 
   users-db:
     container_name: users-db
@@ -43,31 +43,32 @@ services:
       retries: 5
       start_period: 10s
     restart: unless-stopped
-    # expose:
-    #   - "5433"
+    command: -p 5433
     ports:
-      - "5433:5432"
-
-  api:
-    container_name: api
-    build:
-      context: .
-      dockerfile: ./backend/Dockerfile
-    command: bash -c "cd /opt/app/app/commons && alembic upgrade head && cd /opt/app/app  && uvicorn main:app --reload --workers 1 --host 0.0.0.0 --port 8000"
-    env_file:
-      - .env
-    volumes:
-      - ./commons:/opt/app/app/commons
-      - ./staticfiles:/opt/app/app/staticfiles
-    depends_on:
-      - db
-    ports:
-      - 8000:8000
-    networks:
-      - backend
-      - frontend
+      - "5433:5433"
+    expose:
+      - "5433"
+    # api:
+    #   container_name: api
+    #   build:
+    #     context: .
+    #     dockerfile: ./backend/Dockerfile
+    #   command: bash -c "cd /opt/app/app/commons && alembic upgrade head && cd /opt/app/app  && uvicorn main:app --reload --workers 1 --host 0.0.0.0 --port 8000"
+    #   env_file:
+    #     - .env
+    #   volumes:
+    #     - ./commons:/opt/app/app/commons
+    #     - ./staticfiles:/opt/app/app/staticfiles
+    #   depends_on:
+    #     - db
+    #   ports:
+    #     - 8000:8000
+    #   networks:
+    #     - backend
+    #     - frontend
 
   auth-service:
+    container_name: auth-service
     volumes:
       - ./authservice/src:/app
     env_file: ./config/authservice/.auth.env
@@ -78,35 +79,33 @@ services:
     depends_on:
       users-db:
         condition: service_healthy
-      cache:
+      limiter:
         condition: service_started
     expose:
       - "8001"
 
-  cache:
+  limiter:
     image: redis:latest
     command: /bin/sh -c "redis-server --requirepass $$REDIS_PASSWORD"
     volumes:
-      - cache:/data
-    env_file: ./config/redis/.redis.env
-    # expose:
-    #   - "6379"
+      - limiter:/data
+    env_file: ./config/limiter/.limiter.env
+    expose:
+      - "6379"
     healthcheck:
       test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
-    ports:
-      - 6379:6379
 
-  front:
-    container_name: front
-    build: ./frontend/
-    env_file:
-      - .env
-    depends_on:
-      - api
-    ports:
-      - 8080:3000
-    networks:
-      - frontend
+  # front:
+  #   container_name: front
+  #   build: ./frontend/
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     - api
+  #   ports:
+  #     - 8080:3000
+  #   networks:
+  #     - frontend
 
   nginx-proxi-pass:
     restart: always
@@ -118,15 +117,15 @@ services:
     ports:
       - "80:80"
 
-networks:
-  backend:
-    driver: bridge
+# networks:
+#   backend:
+#     driver: bridge
 
-  frontend:
-    driver: bridge
+#   frontend:
+#     driver: bridge
 
 volumes:
-  cache:
+  limiter:
     driver: local
   dbdata:
     driver: local

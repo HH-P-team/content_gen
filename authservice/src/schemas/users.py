@@ -1,4 +1,4 @@
-import uuid
+from uuid import UUID
 
 from schemas.basejason import BaseOrjsonModel
 
@@ -8,7 +8,7 @@ class UserBase(BaseOrjsonModel):
 
 
 class UserCreate(UserBase):
-    uuid: uuid.UUID
+    uuid: UUID
 
 
 class User(UserCreate):

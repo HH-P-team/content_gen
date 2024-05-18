@@ -1,6 +1,6 @@
 from http import HTTPStatus
 
-from fastapi import Depends, HTTPException, APIRouter
+from fastapi import Depends, HTTPException, APIRouter, Response
 from fastapi_limiter.depends import RateLimiter
 
 from services.auth_service import AuthorizationService, get_auth_service
@@ -20,7 +20,7 @@ router = APIRouter()
 
 @router.post(
     "/register",
-    response_model=users.User,
+    response_model=users.UserCreate,
     status_code=HTTPStatus.ACCEPTED,
     dependencies=[Depends(RateLimiter(times=1, seconds=5))],
 )
@@ -53,6 +53,7 @@ async def register_user(
     dependencies=[Depends(RateLimiter(times=1, seconds=5))],
 )
 async def authenticate_user(
+    response: Response,
     common: LoginPassAnnotated = Depends(LoginPassAnnotated),
     auth_service: AuthorizationService = Depends(get_auth_service),
     user_service: UserService = Depends(get_user_service),
@@ -82,6 +83,9 @@ async def authenticate_user(
         user_service=user_service,
     )
 
+    response.set_cookie(key="access_token", value=auth_data["access_token"])
+    response.set_cookie(key="refresh_token", value=auth_data["refresh_token"])
+
     return auth_data
 
 
@@ -92,6 +96,7 @@ async def authenticate_user(
     dependencies=[Depends(RateLimiter(times=1, seconds=5))],
 )
 async def refreshing_tokens(
+    response: Response,
     common: RefreshTokenAnnotated = Depends(RefreshTokenAnnotated),
     auth_service: AuthorizationService = Depends(get_auth_service),
     user_service: UserService = Depends(get_user_service),
@@ -116,11 +121,15 @@ async def refreshing_tokens(
         user, auth_service=auth_service, user_service=user_service
     )
 
+    response.set_cookie(key="access_token", value=auth_data["access_token"])
+    response.set_cookie(key="refresh_token", value=auth_data["refresh_token"])
+
     return auth_data
 
 
 @router.post(
     "/logout",
+    response_model=users.UserBase,
     status_code=HTTPStatus.ACCEPTED,
     dependencies=[Depends(RateLimiter(times=1, seconds=5))],
 )
@@ -140,3 +149,5 @@ async def logout(
         )
 
     await auth_service.logout(login, common.body.access_token)
+
+    return {"login": login}

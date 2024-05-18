@@ -36,19 +36,19 @@ async def startup():
     await FastAPILimiter.init(cache_limiter)
 
 
-# app.add_middleware(SessionMiddleware, secret_key="secret!")
+app.add_middleware(SessionMiddleware, secret_key="secret!")
 
 
-# @app.middleware("http")
-# async def before_request(request: Request, call_next):
-#     response = await call_next(request)
-#     request_id = request.headers.get("X-Request-Id")
-#     if not request_id:
-#         return ORJSONResponse(
-#             status_code=status.HTTP_400_BAD_REQUEST,
-#             content={"detail": "X-Request-Id is required"},
-#         )
-#     return response
+@app.middleware("http")
+async def before_request(request: Request, call_next):
+    response = await call_next(request)
+    request_id = request.headers.get("X-Request-Id")
+    if not request_id:
+        return ORJSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={"detail": "X-Request-Id is required"},
+        )
+    return response
 
 
 app.include_router(
@@ -65,4 +65,5 @@ if __name__ == "__main__":
         host=settings.auth_host,
         port=settings.auth_port,
         log_level="debug",
+        reload=True,
     )

@@ -19,6 +19,16 @@ class BaseUserStore(ABC):
         pass
 
 
+class BaseAccStore(ABC):
+    @abstractmethod
+    async def add_acc(self, *args, **kwargs):
+        pass
+
+    @abstractmethod
+    async def get_acc_table(self, *args, **kwargs):
+        pass
+
+
 class BaseAsyncCache(ABC):
     @abstractmethod
     async def get(self, *args, **kwargs):

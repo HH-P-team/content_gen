@@ -1,20 +1,22 @@
 import logging
 from logging import config as logging_config
-from dotenv import load_dotenv
 
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy import URL
 
 from core.logger import LOGGING
 
-load_dotenv()
 
 logging_config.dictConfig(LOGGING)
-
 logger = logging.getLogger("AuthService")
 
 
 class MyConfig(BaseSettings):
+
+    model_config = SettingsConfigDict(
+        env_file=".env", env_file_encoding="utf-8"
+    )
+
     project_name: str = "auth"
 
     auth_host: str = "localhost"
