@@ -1,0 +1,8 @@
+.ActiveImage {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    border-radius: inherit;
+    /* max-height: 200px; */
+  }

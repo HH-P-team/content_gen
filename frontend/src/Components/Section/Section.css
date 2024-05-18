@@ -1,0 +1,43 @@
+.Section {
+    /* flex-direction: column; */
+    /* justify-content: space-between; */
+    background-color: rgba(0, 255, 255, 0.742);
+    margin: 10px;
+    padding: 1vh;
+    margin-bottom: 30px;
+    border-radius: 30px;
+    transition: transform 0.3s ease-in;
+    color: rgb(2, 3, 33);
+    opacity: 0.9;
+  }
+
+  .Section:hover {
+    transform: scale(1.01);
+    opacity: 1;
+  }
+
+.SectionHeader {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 20px;;
+  align-items: center;
+}
+
+.SectionHeaderImage {
+  min-width: 50px;
+  min-height: 50px;
+  width: 10%;
+  margin-right: 3vmin;
+  border-radius: 100%;
+  background-color: aqua;
+}
+
+.SectionTitle {
+  font-size: calc(12px + 2vmin);
+}
+
+.SectionContent {
+  min-height: 100px;
+  border-radius: 30px;
+  background-color: rgba(0, 255, 255, 0.648);
+}

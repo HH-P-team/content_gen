@@ -12,23 +12,18 @@ body * {
 }
 
 body {
-    /* color: #7700ff; */
-    /* color: #273a64; */
     min-height: 100vh;
     max-height: 100vh;
-    padding-right: 5vmin;
-    padding-left: 5vmin;
+    padding-right: 2vmin;
+    padding-left: 2vmin;
     padding-top: 2vmin;
     padding-bottom: 2vmin;
     display: flex;
     flex-direction: column;
     justify-items: center;
     align-items: center;
-    /* justify-content: space-between; */
-    /* font-family: RostelecomBasis-Regular; */
     background-image: url("./lightplus_bg_x2.svg");
     background-size: cover;
-    /* background-attachment: scroll; */
 }
 
 @keyframes rubber {
@@ -37,23 +32,23 @@ body {
     }
   
     30% {
-      transform: scale3d(1.25, 0.75, 1);
+      transform: scale3d(1.1, 0.9, 1);
     }
   
     40% {
-      transform: scale3d(0.75, 1.25, 1);
+      transform: scale3d(0.9, 1.1, 1);
     }
   
     50% {
-      transform: scale3d(1.15, 0.85, 1);
+      transform: scale3d(1.1, 0.9, 1);
     }
   
     65% {
-      transform: scale3d(0.95, 1.05, 1);
+      transform: scale3d(0.9, 1.02, 1);
     }
   
     75% {
-      transform: scale3d(1.05, 0.95, 1);
+      transform: scale3d(1.02, 0.9, 1);
     }
   
     to {

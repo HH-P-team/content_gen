@@ -15,3 +15,14 @@
   .Card:hover {
     transform: scale(1.01);
   }
+
+  .ImageWrapper {
+    min-height: 80%;
+    /* background-image: url('../../loading.gif'); */
+    background-color: aliceblue;
+    /* max-width: 40px; */
+    border-radius: 30px;
+    background-size: 100%;
+    border-color: rgb(47, 224, 224);
+    border-style: solid;
+  }

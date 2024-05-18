@@ -1,4 +1,4 @@
-import { $host } from '.';
+import { $host } from '..';
 
 export const getImageByText = async (message) => {
 	const { data } = await $host.post('/image', {message});

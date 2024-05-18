@@ -3,3 +3,7 @@
   flex-direction: row;
   text-align: center;
 }
+
+.Wrapper {
+  width: 100%;
+}

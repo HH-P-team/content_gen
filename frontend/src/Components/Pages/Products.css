@@ -1,7 +1,7 @@
-.App-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 1fr);
+.Products {
+    /* display: grid; */
+    /* grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr); */
     padding: 10px;
     min-height: 70vh;
     margin-top: 20px;
