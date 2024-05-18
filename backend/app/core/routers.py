@@ -4,10 +4,11 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.schemas import ImagePostQuery
+from commons.config import get_settings
 from commons.db import get_async_db
 from commons.models import Image, Subject, Product, Post
 from commons.neuro_gateway.stable_diffusion import StableDiffusion
-from commons.config import get_settings
+from commons.utils import get_products
 
 settings = get_settings()
 sd = StableDiffusion(settings.mistral_api_key)
