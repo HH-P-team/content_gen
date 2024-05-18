@@ -2,9 +2,9 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
+# from fastapi.staticfiles import StaticFiles
 
-from app.core.routers import router
+from app.core.base import router
 
 origins = [
     "*",
@@ -21,11 +21,11 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-app.mount(
-    "/product_images",
-    StaticFiles(directory="staticfiles"),
-    name="staticfiles",
-)
+# app.mount(
+#     "/product_images",
+#     StaticFiles(directory="staticfiles"),
+#     name="staticfiles",
+# )
 
 app.add_middleware(
     CORSMiddleware,
