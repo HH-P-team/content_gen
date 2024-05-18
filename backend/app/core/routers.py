@@ -14,7 +14,7 @@ settings = get_settings()
 sd = StableDiffusion(settings.mistral_api_key)
 
 router = APIRouter(
-    prefix="/api/v1",
+    prefix=settings.api_prefix,
     tags=["api"],
     default_response_class=JSONResponse,
 )

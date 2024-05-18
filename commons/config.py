@@ -22,6 +22,7 @@ class Settings(BaseSettings):
     async_database_uri: Union[PostgresDsn, str] = Field(default='')
 
     api_port: int = Field(alias='API_PORT')
+    api_prefix: str = Field(alias='API_PREFIX')
 
     @field_validator('database_uri')
     def assemble_db_connection(

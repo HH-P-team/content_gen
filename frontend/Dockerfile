@@ -1,9 +1,20 @@
 FROM node:lts-alpine
-WORKDIR /app
-COPY package.json ./
+
+RUN echo $REACT_APP_SERVER_API
+
+WORKDIR /opt/app
+
+COPY ./frontend/package.json ./
+COPY ./.env .
+
 ENV NODE_OPTIONS="--max-old-space-size=4096"
+
 RUN npm install --legacy-peer-deps
-COPY . .
+
+COPY ./frontend .
+
 RUN npm run build
-EXPOSE 8080
-CMD ["npm", "run", "start"]
+
+EXPOSE ${FRONTEND_PORT}
+
+CMD ["npm", "start"]

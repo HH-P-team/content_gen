@@ -27,7 +27,7 @@ services:
       - backend
       
   api:
-    container_name: api
+    container_name: ${API_HOST}
     build: 
       context: ./
       dockerfile: ./backend/Dockerfile
@@ -39,20 +39,22 @@ services:
     depends_on:
       - db
     ports:
-      - 8000:8000
+      - 8000:${API_PORT}
     networks:
       - backend
       - frontend
 
   front:
     container_name: front
-    build: ./frontend/
-    env_file:
-       - .env
+    build: 
+      context: ./
+      dockerfile: ./frontend/Dockerfile
     depends_on:
       - api
+    environment:
+      - REACT_APP_SERVER_API:${REACT_APP_SERVER_API}
     ports:
-      - 8080:3000
+      - ${FRONTEND_PORT}:3000
     networks:
       - frontend
 
