@@ -6,7 +6,7 @@ export default function Subjects(props) {
         <div>
             <h2>Категории продуктов</h2>
             <div className="Subjects">
-                {props.data.map((elem) => <Card name={elem.name} key={elem.id} />)}
+                {props.data.map((elem) => <Card name={elem.name} key={elem.id}/>)}
             </div>
         </div>
     );
