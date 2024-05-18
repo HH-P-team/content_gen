@@ -5,7 +5,7 @@ services:
     container_name: ${POSTGRES_HOST}
     image: postgres:latest
     env_file:
-     - .env
+      - .env
     environment:
       POSTGRES_DB: ${POSTGRES_DB_NAME}
       POSTGRES_USER: ${POSTGRES_USER}
@@ -25,14 +25,38 @@ services:
       - 5432:${POSTGRES_PORT}
     networks:
       - backend
-      
+
+  users-db:
+    container_name: users-db
+    image: postgres:latest
+    env_file: ./config/users_db/.user_db.env
+    volumes:
+      - ./dbdata:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+    command: -p 5433
+    ports:
+      - "5433:5433"
+    expose:
+      - "5433"
+
   api:
     container_name: ${API_HOST}
     build: 
       context: ./
       dockerfile: ./backend/Dockerfile
+    command: bash -c "cd /opt/app/app/commons && alembic upgrade head && cd /opt/app/app  && uvicorn main:app --reload --workers 1 --host 0.0.0.0 --port 8000"
     env_file:
-       - .env
+      - .env
     volumes:
       - ./commons:/opt/app/commons
       - ./staticfiles:/opt/app/staticfiles
@@ -44,11 +68,41 @@ services:
       - backend
       - frontend
 
+  auth-service:
+    container_name: auth-service
+    volumes:
+      - ./authservice/src:/app
+    env_file: ./config/authservice/.auth.env
+    build:
+      context: .
+      dockerfile: dockerization/Dockerfile.auth
+    command: bash -c "cd /app && alembic upgrade head && uvicorn main:app --reload --workers 1 --host 0.0.0.0 --port 8001"
+    depends_on:
+      users-db:
+        condition: service_healthy
+      limiter:
+        condition: service_started
+    expose:
+      - "8001"
+      
+  limiter:
+    image: redis:latest
+    command: /bin/sh -c "redis-server --requirepass $$REDIS_PASSWORD"
+    volumes:
+      - limiter:/data
+    env_file: ./config/limiter/.limiter.env
+    expose:
+      - "6379"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+
   front:
     container_name: front
     build: 
       context: ./
       dockerfile: ./frontend/Dockerfile
+    env_file:
+      - .env
     depends_on:
       - api
     environment:
@@ -58,6 +112,16 @@ services:
     networks:
       - frontend
 
+  nginx-proxi-pass:
+    restart: always
+    build:
+      context: .
+      dockerfile: dockerization/Dockerfile.nginx
+    depends_on:
+      - auth-service
+    ports:
+      - "80:80"
+
 networks:
   backend:
     driver: bridge
@@ -65,3 +129,8 @@ networks:
   frontend:
     driver: bridge
 
+volumes:
+  limiter:
+    driver: local
+  dbdata:
+    driver: local

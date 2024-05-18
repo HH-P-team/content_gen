@@ -1,0 +1,12 @@
+redis==4.4.2
+elasticsearch[async]==8.9.0
+fastapi==0.103.1
+orjson==3.9.2
+pydantic==2.3.0
+pydantic-settings==2.0.3
+uvicorn==0.12.2
+uvloop==0.17.0 ; sys_platform != "win32" and implementation_name == "cpython" 
+wheel==0.41.2
+gunicorn==21.2.0
+python-dotenv==1.0.0
+httptools

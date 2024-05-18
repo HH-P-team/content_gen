@@ -4,26 +4,28 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from app.core.routers import router
+from core.routers import router
 
 origins = [
-   '*',
+    "*",
 ]
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     app.include_router(router)
     yield
 
+
 app = FastAPI(
     lifespan=lifespan,
 )
 
 app.mount(
-    '/product_images',
-    StaticFiles(directory='staticfiles'),
-    name='staticfiles',
-    )
+    "/product_images",
+    StaticFiles(directory="staticfiles"),
+    name="staticfiles",
+)
 
 app.add_middleware(
     CORSMiddleware,

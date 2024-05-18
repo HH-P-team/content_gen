@@ -16,4 +16,4 @@ COPY ./backend .
 
 EXPOSE ${API_PORT}
 
-CMD ["python", "start.py"]
+#CMD ["python", "start.py"]
