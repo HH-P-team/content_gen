@@ -1,0 +1,12 @@
+.PageHeader {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 5vmin;
+    margin-right: 5vmin;
+    font-size: 4vmin;
+    color: rgb(23, 156, 145);
+    text-shadow: 1px 1px 1px #000;
+  }
+  

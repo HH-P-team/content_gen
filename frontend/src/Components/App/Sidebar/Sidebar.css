@@ -2,13 +2,19 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 20%;
+    width: 10%;
     min-width: 30vmin;
     margin-right: 3vmin;
     padding: 10px;
     border-radius: 50px;;
-    background-color:rgba(0, 255, 255, 0.428);
+    background-color:rgba(0, 255, 255, 0.097);
+    transition-duration: 0.4s;
+    transition-timing-function: ease-in;
 }
+
+/* .App-sidebar:hover {
+    width: 20%;
+} */
 
 .Img {
     display: block;

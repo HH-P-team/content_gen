@@ -6,6 +6,9 @@ import Sidebar from './Components/App/Sidebar/Sidebar';
 import Subjects from './Components/Pages/Subjects';
 import Products from './Components/Pages/Products';
 import Posts from './Components/Pages/Posts';
+import Profile from './Components/Pages/Profile';
+import About from './Components/Pages/About';
+import Help from './Components/Pages/Help';
 import { useState, useEffect } from 'react';
 import getAllSubjects from './api/subjects/subject.api'
 
@@ -31,6 +34,9 @@ export default function App() {
               <Route path='*' element={<Subjects data={data}/>}></Route>
               <Route path='products' element={<Products data={data}/>}></Route>
               <Route path='posts' element={<Posts />}></Route>
+              <Route path='profile' element={<Profile />}></Route>
+              <Route path='about' element={<About />}></Route>
+              <Route path='help' element={<Help />}></Route>
             </Routes>
         <Footer />
         </div>
