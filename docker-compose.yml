@@ -97,9 +97,8 @@ services:
 
   front:
     container_name: front
-    build: 
-      context: ./
-      dockerfile: ./frontend/Dockerfile
+    command: bash -c "npm run build /opt/app/build && npm run start"
+    build: ./frontend/
     env_file:
       - .env
     depends_on:
@@ -110,16 +109,9 @@ services:
       - ${FRONTEND_PORT}:3000
     networks:
       - frontend
-
-  nginx-proxi-pass:
-    restart: always
-    build:
-      context: .
-      dockerfile: dockerization/Dockerfile.nginx
-    depends_on:
-      - auth-service
-    ports:
-      - "80:80"
+    volumes:
+      - ./frontend/src:/opt/app/src
+      - ./frontend/build:/opt/app/build
 
 networks:
   backend:

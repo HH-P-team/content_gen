@@ -1,0 +1,24 @@
+/* .login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+}
+
+.login-form {
+  margin-top: 20px;
+  width: 300px;
+} */
+.login-form__field {
+  margin-bottom: 12px;
+}
+.login-form__error {
+  margin: 24px 0 0;
+  color: red;
+  text-align: center;
+}
+.sidebar-links a {
+  margin: 24px;
+  color: white;
+}

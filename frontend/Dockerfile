@@ -1,20 +1,12 @@
-FROM node:lts-alpine
+FROM node:21-bullseye
 
-RUN echo $REACT_APP_SERVER_API
+WORKDIR /opt/app/
 
-WORKDIR /opt/app
-
-COPY ./frontend/package.json ./
-COPY ./.env .
-
+COPY package.json /opt/app/package.json
+COPY public/ /opt/app/public/
 ENV NODE_OPTIONS="--max-old-space-size=4096"
 
+RUN npm install -g npm@10.4.0
 RUN npm install --legacy-peer-deps
 
-COPY ./frontend .
-
-RUN npm run build
-
-EXPOSE ${FRONTEND_PORT}
-
-CMD ["npm", "start"]
+COPY src/ /opt/app/src/
