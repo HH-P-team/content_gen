@@ -17,6 +17,8 @@ headers = {
 data = {
     'chat': {
         'user_messange': None,
+        'temperature': 0.9,
+        'system_prompt': 'Ты менеджер рекламного агентства, придумываешь креативную рекламу',
         'messages': [],
         'chat_history': []
     }
