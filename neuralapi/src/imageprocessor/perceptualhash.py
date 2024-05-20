@@ -1,16 +1,10 @@
 import os
-from abc import ABC, abstractmethod
 
 from PIL import Image
 import imagehash
 import distance
 
-
-class ImageProcessor(ABC):
-
-    @abstractmethod
-    def eexecute(self, path: str, filenames: list | None = None):
-        pass
+from imageprocessor.imageprocessor import ImageProcessor
 
 
 class PerceptualHash(ImageProcessor):
@@ -66,10 +60,10 @@ class PerceptualHash(ImageProcessor):
 
         for file_name in filenames:
 
-            query_image = Image.open(path + file_name)
+            query_image = Image.open(path + f"/{file_name}")
             hamming_distances = self._distance_hash(query_image, self.hashes)
             avg = self._avg_distance(hamming_distances)
-            distance_img.append((avg, file_name))
+            distance_img.append((avg / 100, file_name))
 
         distance_img.sort(key=lambda x: x[0])
         return distance_img
