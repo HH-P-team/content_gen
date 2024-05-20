@@ -35,9 +35,11 @@ export default function App() {
             <Route path="/" element={<Subjects data={data} />}>
               <Route path="products" element={<Products data={data} />} />
               <Route path="posts" element={<Posts />} />
+              <Route path="about" element={<About />} />
+              <Route path="help" element={<Help />} />
             </Route>
             <Route element={<PrivateRoute redirectPath={"/login"} />}>
-              <Route path="profile" element={<Profile />}></Route>
+              <Route path="profile" element={<Profile />} />
               <Route path="logout" element={<Logout />} />
             </Route>
             <Route path="login" element={<Login auth={false} />} />
