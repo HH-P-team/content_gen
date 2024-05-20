@@ -6,7 +6,7 @@ import PageWrapper from './PageWrapper';
 
 // import Card from '../Card/Card';
 
-export default function Profile() {
+export default function Help() {
 
     // const [data, setData] = useState([]);
 
@@ -18,15 +18,15 @@ export default function Profile() {
     //   });
     // }, []);
     
-  return (
-      <PageWrapper
-          pageName={'Профиль'}
-        //   controlElement={<Button name={'Добавить'} action={() => console.log('trololo')}/>}
-          content={
-              <div className="Profile">
-                  {/* {data.map((elem) => <Card name={elem.name} key={elem.id} />)} */}
-              </div>
-          }
-      />
-  );
+    return (
+        <PageWrapper
+            pageName={'Помощь'}
+            // controlElement={<Button name={'Добавить'} action={() => console.log('trololo')}/>}
+            content={
+                <div className="Help">
+                {/* {data.map((elem) => <Card name={elem.name} key={elem.id} />)} */}
+                </div>
+            }
+        />
+    );
 }

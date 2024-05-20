@@ -23,7 +23,26 @@ body {
     justify-items: center;
     align-items: center;
     background-image: url("./lightplus_bg_x2.svg");
+    background-color: rgb(8, 1, 15);
+    background-position: fixed;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
     background-size: cover;
+    /* -webkit-backdrop-filter: blur(5px); */
+    backdrop-filter: blur(100px);
+}
+
+* {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+
+  /*
+    Introduced in Internet Explorer 10.
+    See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
+  */
+  -ms-user-select: none;
+  user-select: none;
 }
 
 @keyframes rubber {
@@ -31,22 +50,22 @@ body {
       transform: scale3d(1, 1, 1);
     }
   
-    30% {
-      transform: scale3d(1.1, 0.9, 1);
+    50% {
+      transform: scale3d(1.05, 0.95, 1);
     }
   
-    40% {
+    /* 40% {
       transform: scale3d(0.9, 1.1, 1);
     }
   
     50% {
       transform: scale3d(1.1, 0.9, 1);
-    }
+    } */
   
-    65% {
+    /* 65% {
       transform: scale3d(0.9, 1.02, 1);
     }
-  
+   */
     75% {
       transform: scale3d(1.02, 0.9, 1);
     }

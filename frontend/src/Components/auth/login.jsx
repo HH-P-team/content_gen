@@ -5,6 +5,7 @@ import "./login.css";
 import Input from "../input/input.jsx";
 import Button from "../button/button.jsx";
 import MenuLink from "../menu/menu-link.jsx";
+import { postRegistration, postAuthenticate } from "../../api/auth/auth.api.js";
 
 export default function LoginForm({ auth }) {
   const [error, setError] = useState("");
@@ -38,7 +39,19 @@ export default function LoginForm({ auth }) {
     }
 
     try {
-      setTimeout(1);
+      if (auth) {
+        postRegistration(username, password).then((data) => {
+          console.log(data);
+        });
+      } else {
+        postAuthenticate(username, password).then((data) => {
+          console.log(data);
+        });
+      }
+
+      // data = await postLogin();
+      // console.log(data);
+      // setTimeout(1);
       // const response = await axios({
       //   method: "POST",
       //   url: "/auth/login",

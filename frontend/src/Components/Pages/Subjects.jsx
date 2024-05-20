@@ -1,27 +1,18 @@
-import "./Subjects.css";
-import Card from "../Card/Card";
-import getAllSubjects from "../../api/subjects/subject.api";
-import { useState, useEffect } from 'react';
+import './Subjects.css';
+import PageWrapper from './PageWrapper';
+import Card from '../Card/Card';
+import Button from '../Button/Button';
 
 export default function Subjects(props) {
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    getAllSubjects().then((data) => {
-      if (data.status) {
-        setData(data.result);
-      }
-    });
-  }, []);
-
-  return (
-    <div>
-      <h2>Категории продуктов</h2>
-      <div className="Subjects">
-        {props.data.map((elem) => (
-          <Card name={elem.name} key={elem.id} />
-        ))}
-      </div>
-    </div>
-  );
+    return (
+        <PageWrapper
+            pageName={'Категории продуктов'}
+            controlElement={<Button name={'Добавить'} action={() => console.log('trololo')}/>}
+            content={
+                <div className="Subjects">
+                    {props.data.map((elem) => <Card name={elem.name} key={elem.id} id={elem.id}/>)}
+                </div>
+            }
+        />
+    );
 }

@@ -8,6 +8,6 @@ export default function Login({ auth }) {
   };
 
   return (
-    <Modal title={"test"} content={"test"} contentObject={contentObject} />
+    <Modal title={"Авторизация"} contentObject={contentObject} />
   );
 }

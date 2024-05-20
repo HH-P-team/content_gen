@@ -4,7 +4,7 @@
     justify-content: center;
     align-items: center;
     background-color: #430b84b9;
-    font-size: calc(10px + 2vmin);
+    font-size: calc(20px + 2vmin);
     /* width: 50vmax; */
     height: 15vmin;
     color: white;
@@ -13,5 +13,6 @@
     padding-bottom: auto;
     padding-left: 5vmin;
     padding-right: 5vmin;
+    text-shadow: 1px 1px 1px #000;
   }
   

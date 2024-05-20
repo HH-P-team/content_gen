@@ -1,13 +1,18 @@
 from sqlalchemy import ForeignKey, LargeBinary, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
+#TODO Добавить в миксины created, updated
+
 class Base(DeclarativeBase):
     pass
 
-class Subject(Base):
+class Mixin:
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+
+
+class Subject(Base, Mixin):
     __tablename__ = 'subject'
 
-    id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(100))
     products: Mapped[list['Product']] = relationship(
         back_populates="subject", cascade="all, delete-orphan"
@@ -18,10 +23,9 @@ class Subject(Base):
         return f'Subject(id={self.id}, name={self.name})'
     
 
-class Product(Base):
+class Product(Base, Mixin):
     __tablename__ = 'product'
 
-    id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(100))
     description: Mapped[str] = mapped_column(String(100))
     subject_id: Mapped[int] = mapped_column(ForeignKey("subject.id"))
@@ -35,10 +39,9 @@ class Product(Base):
         return f'Product(id={self.id}, name={self.name})'
 
 
-class Post(Base):
+class Post(Base, Mixin):
     __tablename__ = 'post'
 
-    id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(100))
     description: Mapped[str] = mapped_column(String(1000))
     product_id: Mapped[int] = mapped_column(ForeignKey("product.id"))
@@ -49,10 +52,9 @@ class Post(Base):
         return f'Post(id={self.id}, name={self.name})'
     
 
-class Image(Base):
+class Image(Base, Mixin):
     __tablename__ = 'image'
 
-    id: Mapped[int] = mapped_column(primary_key=True)
     payload: Mapped[bytes] = mapped_column(LargeBinary)
     subject_id: Mapped[int] = mapped_column(ForeignKey("subject.id"), nullable=True)
     subject: Mapped['Subject'] = relationship(back_populates='image')

@@ -105,6 +105,7 @@ services:
       - api
     environment:
       - REACT_APP_SERVER_API:${REACT_APP_SERVER_API}
+      - REACT_AUTH_SERVER_API:${REACT_AUTH_SERVER_API}
     ports:
       - ${FRONTEND_PORT}:3000
     networks:

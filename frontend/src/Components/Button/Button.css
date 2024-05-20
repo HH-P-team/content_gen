@@ -1,13 +1,14 @@
-.MenuButton {
-    width: 100%;
+.Button {
+    /* width: 100%; */
     margin-top: 3vmin;
+    padding: 2vmin;
+    font-size: 2vmin;
     border-radius: 20px;
     background-color:rgba(0, 179, 255, 0.936);
     border: 0;
     color: bisque;
     cursor: pointer;
     text-shadow: 1px 1px 1px #000;
-    font-weight: 500;
     background-image: linear-gradient(
         to top left,
         rgba(0, 0, 0, 0.2),
@@ -20,7 +21,7 @@
     
 }
 
-.MenuButton:hover {
+.Button:hover {
     background-color: rgba(0, 166, 255, 0.936);
     -webkit-animation: rubber 0.3s ease;
     -moz-animation: rubber 0.3s ease;
@@ -28,16 +29,16 @@
     animation: rubber 0.3s ease;
   }
 
-.MenuButton:active {
+.Button:active {
     box-shadow:
       inset -2px -2px 3px rgba(255, 255, 255, 0.6),
       inset 2px 2px 3px rgba(0, 0, 0, 0.6);
 }
 
-.ButtonLink {
+/* .ButtonLink {
     all: unset;
     display: block;
     padding: calc(10px + 2vmin);
-    /* min-width: 15vmin; */
-    font-size: 3vmin;
-}
+    min-width: 15vmin;
+    font-size: 2vmin;
+} */
