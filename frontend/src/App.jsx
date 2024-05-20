@@ -8,6 +8,8 @@ import Subjects from "./Components/Pages/Subjects";
 import Products from "./Components/Pages/Products";
 import Posts from "./Components/Pages/Posts";
 import Profile from "./Components/Pages/Profile";
+import About from "./Components/Pages/About";
+import Help from "./Components/Pages/Help";
 import Login from "./Components/Pages/Login";
 import Logout from "./Components/Pages/Logout";
 import NotFound from "./Components/Pages/NotFound";
@@ -32,7 +34,8 @@ export default function App() {
         <div className="Wrapper">
           <Header />
           <Routes>
-            <Route path="/" element={<Subjects data={data} />}>
+            <Route path="/">
+              <Route path="subjects" element={<Subjects data={data} />} />
               <Route path="products" element={<Products data={data} />} />
               <Route path="posts" element={<Posts />} />
               <Route path="about" element={<About />} />
