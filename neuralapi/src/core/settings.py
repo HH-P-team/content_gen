@@ -16,10 +16,11 @@ class MyConfig(BaseSettings):
         env_file=".env", env_file_encoding="utf-8"
     )
 
-    project_name: str = "neuralapi"
+    app_name: str = "neuralapi"
+    app_host: str = "localhost"
+    app_port: int = 8012
 
-    auth_host: str = "localhost"
-    auth_port: int = 8012
+    ext_api_timeout: int = 100
 
 
 settings = MyConfig()

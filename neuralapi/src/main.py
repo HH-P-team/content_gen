@@ -10,7 +10,7 @@ from core.settings import settings
 
 
 app = FastAPI(
-    title=settings.project_name,
+    title=settings.app_name,
     docs_url="/api/openapi",
     openapi_url="/api/openapi.json",
     default_response_class=ORJSONResponse,
@@ -25,11 +25,11 @@ app.include_router(
 
 
 if __name__ == "__main__":
-    logging.info("start auth service")
+    logging.info("start neuralapi-service")
     uvicorn.run(
         "main:app",
-        host=settings.auth_host,
-        port=settings.auth_port,
+        host=settings.app_host,
+        port=settings.app_port,
         log_level="debug",
         reload=True,
     )

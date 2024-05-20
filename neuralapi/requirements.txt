@@ -1,5 +1,5 @@
 fastapi==0.104.1
-pydantic==2.3.0
+pydantic==2.7.1
 pydantic_settings==2.0.3
 orjson==3.9.10
 uvicorn==0.23.2
@@ -12,3 +12,8 @@ numpy==1.26.4
 keras==3.3.3
 tensorflow==2.16.1
 scikit-learn==1.4.2
+aiofiles==23.2.1
+gradio==4.31.4
+transformers==4.41.0
+tf-keras==2.16.0
+torch==2.3.0
