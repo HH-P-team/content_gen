@@ -8,7 +8,10 @@ venv/
 env/
 /pgdata*
 dbdata/
+datasets/
 __pycache__/
 
 node_modules/
 *.pyc
+
+kukmber.py
