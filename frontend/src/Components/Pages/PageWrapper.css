@@ -1,6 +1,8 @@
 .PageWrapper {
     padding: 10px;
-    min-height: 70vh;
+    /* min-height: 70vh; */
+    /* width: 90%;
+    margin-left: 5%; */
     margin-top: 20px;
     margin-bottom: 40px;
     border-radius: 50px;

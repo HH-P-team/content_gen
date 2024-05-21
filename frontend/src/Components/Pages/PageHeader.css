@@ -6,6 +6,7 @@
     margin-left: 5vmin;
     margin-right: 5vmin;
     font-size: 4vmin;
+    border-radius: 20%;
     color: rgb(23, 156, 145);
     text-shadow: 1px 1px 1px #000;
   }
