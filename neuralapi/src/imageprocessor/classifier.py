@@ -30,3 +30,10 @@ class Classifier:
         sorted(classification, key=lambda x: x[1])
 
         return classification
+
+
+beuty_classifier = Classifier()
+education_classifier = Classifier()
+relax_classifier = Classifier()
+restuarants_classifier = Classifier()
+dress_classifier = Classifier()

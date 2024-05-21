@@ -2,7 +2,7 @@ from http import HTTPStatus
 
 import httpx
 
-from core.settings import settings
+from core.settings import settings, logger
 
 headers = {
     "Accept": "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
@@ -20,27 +20,36 @@ class API:
 
     async def send_post(self, URL, data) -> dict:
         headers["Authorization"] = f"Bearer {self.api_key}"
-        async with httpx.AsyncClient() as client:
-            resp = await client.post(
-                url=URL,
-                headers=headers,
-                json=data,
-                timeout=settings.ext_api_timeout,
-            )
+        try:
+            async with httpx.AsyncClient() as client:
+                resp = await client.post(
+                    url=URL,
+                    headers=headers,
+                    json=data,
+                    timeout=settings.ext_api_timeout,
+                )
+        except httpx.ReadTimeout as e:
+            logger.error(e)
+            exp = HTTPStatus.REQUEST_TIMEOUT
+
         if resp.status_code == HTTPStatus.OK:
             return resp.json()
         else:
             raise Exception(resp.text)
 
-    async def send_get(self, URL, params) -> bytes:
+    async def send_get(self, URL, params=None) -> bytes:
         headers["Authorization"] = f"Bearer {self.api_key}"
-        async with httpx.AsyncClient() as client:
-            resp = await client.get(
-                url=URL,
-                headers=headers,
-                params=params,
-                timeout=settings.ext_api_timeout,
-            )
+
+        try:
+            async with httpx.AsyncClient() as client:
+                resp = await client.get(
+                    url=URL,
+                    headers=headers,
+                    params=params,
+                    timeout=settings.ext_api_timeout,
+                )
+        except httpx.ReadTimeout as e:
+            logger.error(e)
 
         if resp.status_code == HTTPStatus.OK:
             return resp.content

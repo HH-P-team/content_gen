@@ -20,7 +20,7 @@ class MyConfig(BaseSettings):
     app_host: str = "localhost"
     app_port: int = 8012
 
-    ext_api_timeout: int = 100
+    ext_api_timeout: int = 1000
 
 
 settings = MyConfig()

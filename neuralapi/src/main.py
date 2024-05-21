@@ -1,12 +1,31 @@
 import logging
 import uvicorn
 
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
 
 from api.v1.imaging import imaging_router
-
 from core.settings import settings
+from imageprocessor.perceptualhash import PerceptualHash
+from imageprocessor.resnet import ResNet
+
+
+from imageprocessor.classifier import (
+    beuty_classifier,
+    education_classifier,
+    relax_classifier,
+    restuarants_classifier,
+    dress_classifier,
+)
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    beuty_phash = PerceptualHash("datasets/beuty/2021")
+    beuty_resnet = ResNet("datasets/beuty/2021")
+    beuty_classifier.add_processor(beuty_phash)
+    beuty_classifier.add_processor(beuty_resnet)
 
 
 app = FastAPI(
@@ -19,8 +38,8 @@ app = FastAPI(
 
 app.include_router(
     imaging_router,
-    prefix="/api/v1/authorization",
-    tags=["authorization"],
+    prefix=f"/api/v1/{settings.app_name}",
+    tags=[f"{settings.app_name}"],
 )
 
 
