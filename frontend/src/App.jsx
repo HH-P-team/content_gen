@@ -11,36 +11,39 @@ import About from './Components/Pages/About';
 import Help from './Components/Pages/Help';
 import { useState, useEffect } from 'react';
 import getAllSubjects from './api/subjects/subject.api'
+import { useSelector, useDispatch } from 'react-redux'
 
 export default function App() {
 
-  const [data, setData] = useState([]);
+    // const [data, setData] = useState([]);
+    const dispatch = useDispatch();
+    const subjects = useSelector((state) => state.subjects);
 
-  useEffect(() => {
-    getAllSubjects().then((data) => {
-      if (data.status) {
-        setData(data.result);
-      }
-    });
-  }, []);
+    useEffect(() => {
+        getAllSubjects().then((data) => {
+            if (data.status) {
+                dispatch({ type: 'CASE_SET_SUBJECTS', value: data.result })
+            }
+        });
+    }, []);
 
-  return (
-    <div className="App">
-      <BrowserRouter>
-      <Sidebar />
-        <div className='Wrapper'>
-          <Header />
-            <Routes>
-              <Route path='*' element={<Subjects data={data}/>}></Route>
-              <Route path='products' element={<Products data={data}/>}></Route>
-              <Route path='posts' element={<Posts />}></Route>
-              <Route path='profile' element={<Profile />}></Route>
-              <Route path='about' element={<About />}></Route>
-              <Route path='help' element={<Help />}></Route>
-            </Routes>
-        <Footer />
+    return (
+        <div className="App">
+            <BrowserRouter>
+                <Sidebar />
+                <div className='Wrapper'>
+                    <Header />
+                    <Routes>
+                        <Route path='*' element={<Subjects data={subjects}/>}></Route>
+                        <Route path='products' element={<Products data={subjects}/>}></Route>
+                        <Route path='posts' element={<Posts />}></Route>
+                        <Route path='profile' element={<Profile />}></Route>
+                        <Route path='about' element={<About />}></Route>
+                        <Route path='help' element={<Help />}></Route>
+                    </Routes>
+                    <Footer />
+                </div>
+            </BrowserRouter>
         </div>
-        </BrowserRouter>
-    </div>
-  );
+    );
 }
