@@ -1,80 +1,21 @@
-import { useState } from "react";
-
 import "./login.css";
 
 import Input from "../input/input.jsx";
 import Button from "../button/button.jsx";
 import MenuLink from "../menu/menu-link.jsx";
-import { postRegistration, postAuthenticate } from "../../api/auth/auth.api.js";
 
-export default function LoginForm({ auth }) {
-  const [error, setError] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [isDisabled, disable] = useState(false);
-
-  const usernameHandler = (username) => {
-    setError("");
-    setUsername(username);
-  };
-
-  const passwordHandler = (password) => {
-    setError("");
-    setPassword(password);
-  };
-
-  const confirmPasswordHandler = (confirmPassword) => {
-    setError("");
-    setConfirmPassword(confirmPassword);
-  };
-
-  const onSubmit = async () => {
-    disable(true);
-
-    if (auth && password !== confirmPassword) {
-      setError("Пароли не совпадают");
-      disable(false);
-      return;
-    }
-
-    try {
-      if (auth) {
-        postRegistration(username, password).then((data) => {
-          console.log(data);
-        });
-      } else {
-        postAuthenticate(username, password).then((data) => {
-          console.log(data);
-        });
-      }
-
-      // data = await postLogin();
-      // console.log(data);
-      // setTimeout(1);
-      // const response = await axios({
-      //   method: "POST",
-      //   url: "/auth/login",
-      //   data: {
-      //     username,
-      //     password,
-      //   },
-      // });
-      // if (cookie.get(CSRF_TOKEN_COOKIE_KEY) && response.data.username) {
-      //   setUser(response.data);
-      // }
-    } catch (error) {
-      console.error(error);
-      setError(error);
-    }
-    disable(false);
-  };
-
-  const submitHandler = (e) => {
-    e.preventDefault();
-    onSubmit();
-  };
-
+export default function LoginForm({
+  auth,
+  error,
+  username,
+  password,
+  confirmPassword,
+  onUsername,
+  onPassword,
+  onConfirmPassword,
+  onSubmit,
+  isDisabled,
+}) {
   return (
     <>
       {!auth && (
@@ -83,13 +24,13 @@ export default function LoginForm({ auth }) {
         </nav>
       )}
 
-      <form className="login-form" active="#" onSubmit={submitHandler}>
+      <form className="login-form" active="#" onSubmit={onSubmit}>
         <div className="login-form__field">
           <Input
             isRequired
             placeholder="Логин"
             value={username}
-            onChange={(e) => usernameHandler(e.target.value)}
+            onChange={(e) => onUsername(e.target.value)}
           />
         </div>
         <div className="login-form__field">
@@ -98,7 +39,7 @@ export default function LoginForm({ auth }) {
             placeholder="Пароль"
             type="password"
             value={password}
-            onChange={(e) => passwordHandler(e.target.value)}
+            onChange={(e) => onPassword(e.target.value)}
           />
         </div>
         {auth ? (
@@ -109,26 +50,20 @@ export default function LoginForm({ auth }) {
                 placeholder="Подтверждения пароля"
                 type="password"
                 value={confirmPassword}
-                onChange={(e) => confirmPasswordHandler(e.target.value)}
+                onChange={(e) => onConfirmPassword(e.target.value)}
               />
             </div>
             <div className="login-form__send">
               <Button
                 type="submit"
                 text="Зарегистрироваться"
-                style="primary"
                 isDisabled={isDisabled}
               />
             </div>
           </>
         ) : (
           <div className="login-form__send">
-            <Button
-              type="submit"
-              text="Войти"
-              style="primary"
-              isDisabled={isDisabled}
-            />
+            <Button type="submit" text="Войти" isDisabled={isDisabled} />
           </div>
         )}
 

@@ -1,14 +1,15 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
+import { Navigate, Outlet } from "react-router-dom";
 
 import "./modal.css";
 
 import { AppContext } from "../../context/context.jsx";
 
 export default function Modal({ title, content, contentObject }) {
-  const { isModalOpen } = useContext(AppContext);
+  const { isModalOpen, closeModal } = useContext(AppContext);
 
-  const LoginFrom = contentObject.loginForm;
-  const auth = contentObject.auth;
+  // const LoginFrom = contentObject.loginForm;
+  // const auth = contentObject.auth;
 
   return (
     <div
@@ -18,8 +19,11 @@ export default function Modal({ title, content, contentObject }) {
     >
       <div className="modal-container">
         <p>{title}</p>
-        {content && <p>{content}</p>}
-        <LoginFrom auth={auth} />
+        {contentObject}
+        {/* <Outlet /> */}
+        {/* {{ contentObject }} */}
+        {/* {content && <p>{content}</p>} */}
+        {/* <LoginFrom auth={auth} /> */}
       </div>
     </div>
   );

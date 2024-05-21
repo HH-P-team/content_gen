@@ -3,15 +3,7 @@ import React, { useState } from "react";
 import { AppContext } from "./context.jsx";
 
 export default function AppProvider({ children }) {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const openSidebar = () => {
-    setIsSidebarOpen(true);
-  };
-  const closeSidebar = () => {
-    setIsSidebarOpen(false);
-  };
+  const [isModalOpen, setIsModalOpen] = useState(true);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -22,11 +14,8 @@ export default function AppProvider({ children }) {
 
   const value = {
     isModalOpen,
-    isSidebarOpen,
     openModal,
-    openSidebar,
     closeModal,
-    closeSidebar,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

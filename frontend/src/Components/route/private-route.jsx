@@ -1,11 +1,10 @@
 import React, { useContext } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 
-// import { ApiContext } from "../../context/context.jsx";
+import { UserContext } from "../../context/context.jsx";
 
 export default function PrivateRoute({ redirectPath }) {
-  // const { isAuthenticated } = useContext(ApiContext);
-  const { isAuthenticated } = true;
+  const { isAuthenticated } = useContext(UserContext);
 
   return isAuthenticated ? <Outlet /> : <Navigate to={redirectPath} />;
 }

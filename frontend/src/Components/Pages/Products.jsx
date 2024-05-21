@@ -11,6 +11,7 @@ export default function Products(props) {
     useEffect(() => {
         getAllProducts().then((data) => {
             if (data.status) {
+                setData(data.result);
                 // console.log(data.result);
             }
         });
@@ -22,7 +23,8 @@ export default function Products(props) {
           controlElement={<Button name={'Добавить'} action={() => console.log('trololo')}/>}
           content={
               <div className="Products">
-                  {props.data.map((elem) => <Section name={elem.name} key={elem.id} />)}
+                  {data.map((elem) => <Section name={elem.name} key={elem.id} />)}
+                  {/* {props.data.map((elem) => <Section name={elem.name} key={elem.id} />)} */}
               </div>
           }
       />
