@@ -1,5 +1,4 @@
 import "./App.css";
-import { useState, useEffect, useMemo, useContext } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./Components/App/Header/Header";
 import Footer from "./Components/App/Footer/Footer";
@@ -10,6 +9,9 @@ import Posts from "./Components/Pages/Posts";
 import Profile from "./Components/Pages/Profile";
 import About from "./Components/Pages/About";
 import Help from "./Components/Pages/Help";
+import { useState, useEffect, useMemo, useContext } from "react";
+import getAllSubjects from "./api/subjects/subject.api";
+import { useSelector, useDispatch } from "react-redux";
 import Login from "./Components/Pages/Login";
 import Logout from "./Components/Pages/Logout";
 import NotFound from "./Components/Pages/NotFound";
@@ -23,6 +25,10 @@ export default function App() {
   const [data, setData] = useState([]);
   const { setUser } = useContext(UserContext);
 
+  // const [data, setData] = useState([]);
+  const dispatch = useDispatch();
+  const subjects = useSelector((state) => state.subjects);
+
   const fetch = useMemo(
     () => async () => {
       data = await postCheck(Cookies.get("access_token"));
@@ -34,6 +40,11 @@ export default function App() {
   );
 
   useEffect(() => {
+    getAllSubjects().then((data) => {
+      if (data.status) {
+        dispatch({ type: "CASE_SET_SUBJECTS", value: data.result });
+      }
+    });
     fetch();
   }, []);
 
@@ -45,8 +56,8 @@ export default function App() {
           <Header />
           <Routes>
             <Route path="/">
-              <Route path="subjects" element={<Subjects data={data} />} />
-              <Route path="products" element={<Products data={data} />} />
+              <Route path="subjects" element={<Subjects data={subjects} />} />
+              <Route path="products" element={<Products data={subjects} />} />
               <Route path="posts" element={<Posts />} />
               <Route path="about" element={<About />} />
               <Route path="help" element={<Help />} />
