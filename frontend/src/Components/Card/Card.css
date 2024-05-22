@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background-color: rgba(0, 255, 255, 0.742);
+    width: 95%;
     margin: 10px;
     padding: 1vh;
     font-size: calc(6px + 2vmin);
@@ -10,17 +10,20 @@
     border-radius: 30px;
     transition: transform 0.3s ease-in;
     color: rgb(2, 3, 33);
+    background-color: rgba(0, 255, 255, 0.742);
+    /* aspect-ratio: 1 / 1; */
   }
 
   .Card:hover {
-    transform: scale(1.01);
+    transform: scale(1.005);
   }
 
   .ImageWrapper {
-    min-height: 80%;
+    /* min-height: 80%; */
     /* background-image: url('../../loading.gif'); */
     background-color: aliceblue;
     /* max-width: 40px; */
+    width: 100%;
     border-radius: 30px;
     background-size: 100%;
     border-color: rgb(47, 224, 224);

@@ -1,4 +1,4 @@
-from sqlalchemy import ForeignKey, LargeBinary, String
+from sqlalchemy import Boolean, ForeignKey, LargeBinary, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 #TODO Добавить в миксины created, updated
@@ -62,6 +62,7 @@ class Image(Base, Mixin):
     product: Mapped['Product'] = relationship(back_populates='image')
     post_id: Mapped[int] = mapped_column(ForeignKey("post.id"), nullable=True)
     post: Mapped['Post'] = relationship(back_populates='image')
+    in_progress: Mapped[bool] = mapped_column(Boolean, default=False, nullable=True)
 
     def __repr__(self) -> str:
         return f'Image(id={self.id})'

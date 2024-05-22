@@ -21,6 +21,7 @@ def get_db() -> Generator[Session, None, None]:
     with Session(engine) as session:
         yield session
 
+
 async def get_async_db() -> AsyncGenerator[AsyncSession, None]:
     """
     """

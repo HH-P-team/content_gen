@@ -1,7 +1,12 @@
 import { $host } from '..';
 
-const getAllProducts = async () => {
-	const { data } = await $host.get('/products');
+const getProducts = async (subjectId) => {
+	const { data } = await $host.get(
+		'/products', 
+		{params: {
+			subject_id: subjectId,
+		}
+	});
 	return data;
 };
 
@@ -10,5 +15,19 @@ export const getProductByText = async (message) => {
 	return data;
 };
 
-export default getAllProducts;
+export const getProductsBySubjectId = async (subjectId) => {
+	const { data } = await $host.post('/products', {subjectId});
+	return data;
+}
+
+export const createProduct = async (subjectId) => {
+	console.log('createProduct');
+	const { data } = await $host.post(
+		'/products', 
+		{subject_id: subjectId},
+	);
+	return data;
+}
+
+export default getProducts;
 

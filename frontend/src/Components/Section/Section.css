@@ -8,11 +8,13 @@
     border-radius: 30px;
     transition: transform 0.3s ease-in;
     color: rgb(2, 3, 33);
+    color: rgb(23, 156, 145);
+    text-shadow: 1px 1px 1px #000;
     opacity: 0.9;
   }
 
   .Section:hover {
-    transform: scale(1.01);
+    transform: scale(1.005);
     opacity: 1;
   }
 
@@ -21,6 +23,7 @@
   flex-direction: row;
   margin-bottom: 20px;;
   align-items: center;
+  justify-content: space-between;
 }
 
 .SectionHeaderImage {
@@ -33,10 +36,12 @@
 }
 
 .SectionTitle {
-  font-size: calc(12px + 2vmin);
+  font-size: calc(12px + 3vmin);
 }
 
 .SectionContent {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
   min-height: 100px;
   border-radius: 30px;
   background-color: rgba(0, 255, 255, 0.648);

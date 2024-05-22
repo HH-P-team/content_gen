@@ -2,12 +2,20 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-class ImagePostQuery(BaseModel):
+class ImageQuery(BaseModel):
     message: str
 
+class ImageSubjectQuery(BaseModel):
+    subject_id: int
+
+class ImageProductQuery(BaseModel):
+    product_id: int
+
+class ImagePostQuery(BaseModel):
+    post_id: int
 
 class SubjectPostQuery(BaseModel):
-    name: str
+    subject_name: str
 
 class SubjectModel(BaseModel):
     id: int
@@ -16,9 +24,5 @@ class SubjectModel(BaseModel):
 class SubjectResponseList(BaseModel):
     subjects: list = list[SubjectModel]
 
-    
-
 class ProductPostQuery(BaseModel):
-    name: Optional[str] = None
-    subject_name: str
-    subject_id: Optional[int] = None
+    subject_id: int
