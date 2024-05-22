@@ -48,9 +48,11 @@ services:
       - "5433:5433"
     expose:
       - "5433"
+    networks:
+      - backend
 
   api:
-    container_name: ${API_HOST}
+    container_name: api
     build: 
       context: ./
       dockerfile: ./backend/Dockerfile
@@ -58,14 +60,16 @@ services:
       - .env
     volumes:
       - ./commons:/opt/app/commons
+      - ./backend:/opt/app/
       - ./staticfiles:/opt/app/staticfiles
+    command: bash -c "python start.py"
     depends_on:
       - db
     ports:
       - 8000:${API_PORT}
     networks:
       - backend
-      - frontend
+      # - frontend
 
   auth-service:
     container_name: auth-service
@@ -83,7 +87,9 @@ services:
         condition: service_started
     expose:
       - "8001"
-      
+    networks:
+      - backend
+
   limiter:
     image: redis:latest
     command: /bin/sh -c "redis-server --requirepass $$REDIS_PASSWORD"
@@ -94,6 +100,8 @@ services:
       - "6379"
     healthcheck:
       test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+    networks:
+      - backend
 
   front:
     container_name: front
@@ -120,6 +128,9 @@ services:
       - auth-service
     ports:
       - "80:80"
+    networks:
+      - backend
+      - frontend
 
 networks:
   backend:
