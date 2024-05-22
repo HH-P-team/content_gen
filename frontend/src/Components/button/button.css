@@ -1,0 +1,40 @@
+/* components */
+.button {
+  width: 100%;
+  border: 10px solid blue;
+  border-radius: 0.7rem;
+  cursor: pointer;
+  opacity: 1;
+}
+.button:disabled {
+  cursor: default;
+}
+.button_default {
+  color: white;
+  background-color: blue;
+}
+.button_default.active,
+.button_default:hover {
+  background: blue;
+}
+.button_default:disabled {
+  opacity: 0.3;
+}
+.button_default:disabled:hover {
+  color: blue;
+  background: white;
+}
+.button_primary {
+  color: white;
+  background: blue;
+}
+.button_primary.active,
+.button_primary:hover {
+  background: blue;
+}
+.button_primary:disabled {
+  opacity: 0.5;
+}
+.button_primary:disabled:hover {
+  background: blue;
+}

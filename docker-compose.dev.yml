@@ -33,11 +33,7 @@ services:
     volumes:
       - ./dbdata:/var/lib/postgresql/data
     healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"
-        ]
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -51,7 +47,7 @@ services:
 
   api:
     container_name: ${API_HOST}
-    build: 
+    build:
       context: ./
       dockerfile: ./backend/Dockerfile
     env_file:
@@ -81,9 +77,9 @@ services:
         condition: service_healthy
       limiter:
         condition: service_started
-    expose:
-      - "8001"
-      
+    ports:
+      - 8001:8001
+
   limiter:
     image: redis:latest
     command: /bin/sh -c "redis-server --requirepass $$REDIS_PASSWORD"
@@ -93,23 +89,28 @@ services:
     expose:
       - "6379"
     healthcheck:
-      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
 
   front:
     container_name: front
+    command: bash -c "npm run build /opt/app/build && npm run start"
     build: 
-      context: ./
-      dockerfile: ./frontend/Dockerfile
+      context: ./frontend
+      dockerfile: ./Dockerfile.dev
     env_file:
       - .env
     depends_on:
       - api
     environment:
       - REACT_APP_SERVER_API:${REACT_APP_SERVER_API}
+      - REACT_AUTH_SERVER_API:${REACT_AUTH_SERVER_API}
     ports:
       - ${FRONTEND_PORT}:3000
     networks:
       - frontend
+    volumes:
+      - ./frontend/src:/opt/app/src
+      - ./frontend/build:/opt/app/build
 
   nginx-proxi-pass:
     restart: always
@@ -119,7 +120,7 @@ services:
     depends_on:
       - auth-service
     ports:
-      - "80:80"
+      - 80:80
 
 networks:
   backend:

@@ -6,7 +6,6 @@ import AddSubjectForm from '../Forms/AddSubjectForm';
 import getImageByText from '../../api/images/image.api';
 
 export default function Subjects(props) {
-
     return (
         <PageWrapper
             pageName={'Категории продуктов'}
