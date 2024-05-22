@@ -41,6 +41,12 @@ class MyConfig(BaseSettings):
     jwt_algorithm: str = "JWT_ALGORITHM"
 
     admin_level: int = 5
+    
+    # ALLOW_ORIGINS = str(os.getenv("ALLOW_ORIGINS", ""))
+    # ALLOW_CREDENTIALS = bool(int(os.getenv("ALLOW_CREDENTIALS", 0)))
+    # ALLOW_METHODS = str(os.getenv("ALLOW_METHODS", ""))
+    # ALLOW_HEADERS = str(os.getenv("ALLOW_HEADERS", ""))
+
 
 
 settings = MyConfig()
