@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useMemo, useContext } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./Components/App/Header/Header";
 import Footer from "./Components/App/Footer/Footer";
@@ -14,54 +14,28 @@ import Login from "./Components/Pages/Login";
 import Logout from "./Components/Pages/Logout";
 import NotFound from "./Components/Pages/NotFound";
 import PrivateRoute from "./Components/route/private-route";
-import getAllSubjects from "./api/subjects/subject.api";
+import { postCheck } from "./api/auth/auth.api";
 import Cookies from "js-cookie";
 
 import { UserContext } from "./context/context";
 
 export default function App() {
   const [data, setData] = useState([]);
-
-  // const fetch = useMemo(
-  //   () => async () => {
-  //     try {
-  //       const response = await axios.get("/auth/me");
-  //       if (cookie.get(CSRF_TOKEN_COOKIE_KEY) && response.data.username) {
-  //         setUser(response.data);
-  //       }
-
-  //       const translate = await axios.get("/system/front");
-  //       if (translate.data) {
-  //         setTranslate(translate.data);
-  //       }
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-
-  //     setLoading(false);
-  //   },
-  //   [axios, cookie, setUser]
-  // );
-
-  // useEffect(() => {
-  //   fetch();
-  // }, []);
-
   const { setUser } = useContext(UserContext);
 
-  useEffect(() => {
-    if (Cookies.get("access_token") && Cookies.get("refresh_token")) {
-      setUser();
-    }
-  }, []);
+  const fetch = useMemo(
+    () => async () => {
+      data = await postCheck(Cookies.get("access_token"));
+      if (data.login) {
+        setUser(data);
+      }
+    },
+    [setUser]
+  );
 
-  // useEffect(() => {
-  //   getAllSubjects().then((data) => {
-  //     if (data.status) {
-  //       setData(data.result);
-  //     }
-  //   });
-  // }, []);
+  useEffect(() => {
+    fetch();
+  }, []);
 
   return (
     <div className="App">
@@ -76,14 +50,14 @@ export default function App() {
               <Route path="posts" element={<Posts />} />
               <Route path="about" element={<About />} />
               <Route path="help" element={<Help />} />
+              <Route element={<PrivateRoute redirectPath={"login"} />}>
+                <Route path="profile" element={<Profile />} />
+                <Route path="logout" element={<Logout />} />
+              </Route>
+              <Route path="login" element={<Login auth={false} />} />
+              <Route path="auth" element={<Login auth={true} />} />
+              <Route path="*" element={<NotFound />} />
             </Route>
-            <Route element={<PrivateRoute redirectPath={"/login"} />}>
-              <Route path="profile" element={<Profile />} />
-              <Route path="logout" element={<Logout />} />
-            </Route>
-            <Route path="login" element={<Login auth={false} />} />
-            <Route path="auth" element={<Login auth={true} />} />
-            <Route path="*" element={<NotFound />} />
           </Routes>
           <Footer />
         </div>

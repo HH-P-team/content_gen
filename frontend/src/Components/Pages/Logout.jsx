@@ -1,34 +1,25 @@
-// import { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 
-// import { UserContext, ApiContext, CookieContext } from "../context/context.jsx";
+import { UserContext } from "../../context/context";
 
-// import { CSRF_TOKEN_COOKIE_KEY } from "../constants/constants.jsx";
+import postLogout from "../../api/auth/auth.api";
 
 export default function Logout() {
-  // const cookie = useContext(CookieContext);
-  // const { axios } = useContext(ApiContext);
-  // const { deAuthUser } = useContext(UserContext);
+  const { deAuthUser } = useContext(UserContext);
 
-  // const logoutHandler = async () => {
-  //   try {
-  //     await axios({
-  //       method: "POST",
-  //       url: "/auth/logout",
-  //       headers: {
-  //         "X-CSRFToken": cookie.get(CSRF_TOKEN_COOKIE_KEY),
-  //       },
-  //     });
+  const logoutHandler = async () => {
+    try {
+      await postLogout();
 
-  //     deAuthUser();
-  //     cookie.delete(CSRF_TOKEN_COOKIE_KEY);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+      deAuthUser();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  // useEffect(() => {
-  //   logoutHandler();
-  // }, []);
+  useEffect(() => {
+    logoutHandler();
+  }, []);
 
-  return null;
+  return <></>;
 }

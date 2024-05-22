@@ -19,6 +19,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     lifespan=lifespan,
+    openapi_url="/api/openapi"
 )
 
 # app.mount(

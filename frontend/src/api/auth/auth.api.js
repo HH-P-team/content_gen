@@ -24,23 +24,37 @@ export const postAuthenticate = async (login, password) => {
 	return data;
 };
 
-export const postRefreshTokens = async (login, password) => {
+export const postRefreshTokens = async (refresh_token) => {
 	const { data } = await $auth({
 		method: "POST",
 		url: "/refresh",
 		data: {
-			login,
-			password,
+			refresh_token,
 		},
 	});
 
 	return data;
 };
 
-export const postLogout = async () => {
+export const postLogout = async (access_token) => {
 	const { data } = await $auth({
 		method: "POST",
 		url: "/logout",
+		data: {
+			access_token,
+		},
+	});
+
+	return data;
+};
+
+export const postCheck = async (access_token) => {
+	const { data } = await $auth({
+		method: "POST",
+		url: "/check",
+		data: {
+			access_token,
+		},
 	});
 
 	return data;

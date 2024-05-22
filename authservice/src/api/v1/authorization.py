@@ -28,7 +28,6 @@ async def register_user(
     common: LoginPassAnnotated = Depends(LoginPassAnnotated),
     user_service: UserService = Depends(get_user_service),
 ) -> users.User:
-
     check_user = await user_service.get_user(common.body.login)
 
     if check_user:
@@ -58,7 +57,6 @@ async def authenticate_user(
     auth_service: AuthorizationService = Depends(get_auth_service),
     user_service: UserService = Depends(get_user_service),
 ) -> authorization.Auth:
-
     user = await user_service.get_user(common.body.login)
     if not user:
         raise HTTPException(
@@ -66,9 +64,7 @@ async def authenticate_user(
             detail="Incorrect login or password",
         )
 
-    is_password_correct = pwd_context.verify(
-        common.body.password, user.password
-    )
+    is_password_correct = pwd_context.verify(common.body.password, user.password)
 
     if not is_password_correct:
         raise HTTPException(
@@ -101,7 +97,6 @@ async def refreshing_tokens(
     auth_service: AuthorizationService = Depends(get_auth_service),
     user_service: UserService = Depends(get_user_service),
 ) -> authorization.Auth:
-
     login = await auth_service.check_refresh_token(common.body.refresh_token)
 
     if not login:
@@ -113,9 +108,7 @@ async def refreshing_tokens(
     user = await user_service.get_user(login)
 
     if not user:
-        raise HTTPException(
-            status_code=HTTPStatus.BAD_REQUEST, detail="Incorrect user"
-        )
+        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST, detail="Incorrect user")
 
     auth_data = await tokeniser(
         user, auth_service=auth_service, user_service=user_service
@@ -137,10 +130,7 @@ async def logout(
     common: AccessTokenAnnotated = Depends(AccessTokenAnnotated),
     auth_service: AuthorizationService = Depends(get_auth_service),
 ):
-
-    login, role = await auth_service.check_access_token(
-        common.body.access_token
-    )
+    login, role = await auth_service.check_access_token(common.body.access_token)
 
     if not login:
         raise HTTPException(
@@ -149,5 +139,28 @@ async def logout(
         )
 
     await auth_service.logout(login, common.body.access_token)
+
+    return {"login": login}
+
+
+@router.post(
+    "/check",
+    response_model=users.UserBase,
+    status_code=HTTPStatus.ACCEPTED,
+    # dependencies=[Depends(RateLimiter(times=1, seconds=5))],
+)
+async def check(
+    common: AccessTokenAnnotated = Depends(AccessTokenAnnotated),
+    auth_service: AuthorizationService = Depends(get_auth_service),
+):
+    login, role = await auth_service.check_access_token(common.body.access_token)
+
+    if not login:
+        raise HTTPException(
+            status_code=HTTPStatus.BAD_REQUEST,
+            detail="Incorrect access token",
+        )
+
+    # await auth_service.logout(login, common.body.access_token)
 
     return {"login": login}

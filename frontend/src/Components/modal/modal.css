@@ -9,6 +9,7 @@
   place-items: center;
   transition: var(--transition);
   z-index: 1;
+  padding: 0;
 }
 .modal-container {
   background: var(--white);
@@ -28,4 +29,14 @@
   line-height: 1.75rem;
   font-weight: 600;
   color: aqua;
+}
+.close-modal-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 2rem;
+  background: transparent;
+  border-color: transparent;
+  color: var(--red-dark);
+  cursor: pointer;
 }
