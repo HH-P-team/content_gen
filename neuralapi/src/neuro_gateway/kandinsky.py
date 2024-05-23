@@ -46,7 +46,9 @@ class Kandinsky(API):
         resp = await self.send_post(URL, data)
         return resp[1]["message"]["id"]
 
-    async def get_image(self, message: str, file_name: str) -> None:
+    async def get_image(
+        self, message: str, negative: str, file_name: str
+    ) -> None:
         """ """
         id = await self.get_image_id(message)
         await self.download_image_by_id(id, file_name)

@@ -11,21 +11,22 @@ from imageprocessor.perceptualhash import PerceptualHash
 from imageprocessor.resnet import ResNet
 
 
-from imageprocessor.classifier import (
-    beuty_classifier,
-    education_classifier,
-    relax_classifier,
-    restuarants_classifier,
-    dress_classifier,
-)
+from imageprocessor.classifier import classifier_matrix
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    beuty_phash = PerceptualHash("datasets/beuty/2021")
-    beuty_resnet = ResNet("datasets/beuty/2021")
-    beuty_classifier.add_processor(beuty_phash)
-    beuty_classifier.add_processor(beuty_resnet)
+    for category, classifier in classifier_matrix.items():
+        classifier.add_processor(
+            PerceptualHash(
+                settings.__getattribute__(f"dataset_{category}_path")
+            )
+        )
+        classifier.add_processor(
+            ResNet(settings.__getattribute__(f"dataset_{category}_path"))
+        )
+
+    yield
 
 
 app = FastAPI(
@@ -33,6 +34,7 @@ app = FastAPI(
     docs_url="/api/openapi",
     openapi_url="/api/openapi.json",
     default_response_class=ORJSONResponse,
+    lifespan=lifespan,
 )
 
 

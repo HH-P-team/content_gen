@@ -22,5 +22,18 @@ class MyConfig(BaseSettings):
 
     ext_api_timeout: int = 1000
 
+    dataset_beauty_path: str = "datasets/beauty"
+    dataset_education_path: str = "datasets/education"
+    dataset_relax_path: str = "datasets/relax"
+    dataset_restuarants_path: str = "datasets/restuarants"
+    dataset_dress_path: str = "datasets/dress"
+
+    path_to_downloads: str = "downloads"
+
+    sd_keys: str | list = "a, b, c"
+    fb_api_key: str = "api_key"
+    fb_secret_key: str = "secret_key"
+
 
 settings = MyConfig()
+settings.sd_keys.split(",")

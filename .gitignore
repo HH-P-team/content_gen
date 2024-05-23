@@ -16,4 +16,4 @@ node_modules/
 *.pyc
 
 kukmber.py
-resnet_image_features.pkl
+resnet_image_features_*

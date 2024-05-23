@@ -51,7 +51,7 @@ services:
 
   api:
     container_name: ${API_HOST}
-    build: 
+    build:
       context: ./
       dockerfile: ./backend/Dockerfile
     env_file:
@@ -83,7 +83,23 @@ services:
         condition: service_started
     expose:
       - "8001"
-      
+
+  neuralapi-service:
+    container_name: neuralapi-service
+    volumes:
+      - ./neuralapi/src:/app
+      - ./datasets:/app/datasets
+      - ./downloads:/app/downloads
+    env_file: ./config/neuralapi/.neuro.env
+    build:
+      context: .
+      dockerfile: dockerization/Dockerfile.neuro
+    ports:
+      - "8012:8012"
+    networks:
+      - backend
+      - frontend
+
   limiter:
     image: redis:latest
     command: /bin/sh -c "redis-server --requirepass $$REDIS_PASSWORD"
@@ -97,7 +113,7 @@ services:
 
   front:
     container_name: front
-    build: 
+    build:
       context: ./
       dockerfile: ./frontend/Dockerfile
     env_file:
@@ -124,7 +140,6 @@ services:
 networks:
   backend:
     driver: bridge
-
   frontend:
     driver: bridge
 

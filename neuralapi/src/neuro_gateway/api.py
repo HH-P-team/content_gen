@@ -30,7 +30,6 @@ class API:
                 )
         except httpx.ReadTimeout as e:
             logger.error(e)
-            exp = HTTPStatus.REQUEST_TIMEOUT
 
         if resp.status_code == HTTPStatus.OK:
             return resp.json()

@@ -15,6 +15,9 @@ class ResNet(ImageProcessor):
 
     def __init__(self, dataset_path: str):
 
+        listpadh = dataset_path.split("/")
+        self.beckup_name = listpadh[-1]
+
         self.model = ResNet50(
             weights="imagenet",
             include_top=False,
@@ -52,7 +55,7 @@ class ResNet(ImageProcessor):
         image_ids = set(map(lambda el: splitext(el)[0], image_filenames))
         try:
             all_image_features = pk.load(
-                open("resnet_image_features.pkl", "rb")
+                open(f"resnet_image_features_{self.beckup_name}.pkl", "rb")
             )
         except (OSError, IOError) as e:
             print(f"file_not_found {e}")
@@ -98,10 +101,15 @@ class ResNet(ImageProcessor):
                 {"image_id": image_id, "features": image_features}
             )
 
-        pk.dump(all_image_features, open("resnet_image_features.pkl", "wb"))
+        pk.dump(
+            all_image_features,
+            open(f"resnet_image_features_{self.beckup_name}.pkl", "wb"),
+        )
 
     def _found(self, query_image_features):
-        image_features = pk.load(open("resnet_image_features.pkl", "rb"))
+        image_features = pk.load(
+            open(f"resnet_image_features_{self.beckup_name}.pkl", "rb")
+        )
         features = []
         for image in image_features:
             features.append(np.array(image["features"]))
