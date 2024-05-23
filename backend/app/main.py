@@ -2,7 +2,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-# from fastapi.staticfiles import StaticFiles
+from fastapi.staticfiles import StaticFiles
 
 from app.core.base import router
 
@@ -22,11 +22,11 @@ app = FastAPI(
     openapi_url="/api/openapi"
 )
 
-# app.mount(
-#     "/product_images",
-#     StaticFiles(directory="staticfiles"),
-#     name="staticfiles",
-# )
+app.mount(
+    "/product_images",
+    StaticFiles(directory="staticfiles"),
+    name="staticfiles",
+)
 
 app.add_middleware(
     CORSMiddleware,

@@ -1,9 +1,6 @@
 import './Products.css';
 import Section from '../Section/Section';
-// import getAllProducts from '../../api/products/product.api';
 import PageWrapper from './PageWrapper';
-import Button from '../Button/Button';
-// import { useState, useEffect } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux'
 

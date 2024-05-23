@@ -12,7 +12,7 @@ RUN pipenv lock
 
 RUN set -ex && pipenv install --deploy --system
 
-COPY ./backend .
+# COPY ./backend .
 
 EXPOSE ${API_PORT}
 

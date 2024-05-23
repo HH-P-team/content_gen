@@ -11,7 +11,6 @@ import Button from '../Button/Button';
 
 export default function Section(props) {
 
-    // const [data, setData] = useState([]);
     const [payload, setPayload] = useState('');
 
     const dispatch = useDispatch();
@@ -28,9 +27,7 @@ export default function Section(props) {
     useEffect(() => {
         getProducts(props.id).then((data) => {
             if (data.status) {
-                // setData(data.result);
                 dispatch({ type: 'CASE_SET_PRODUCTS', value: {subjectId: props.id, product: data.result} });
-                // console.log(data.result);
             }
         });
     }, []);
