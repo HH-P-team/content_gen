@@ -8,6 +8,7 @@ class CategoryEnum(Enum):
     beauty = "beauty"
     education = "education"
     restaurant = "restaurant"
+    vacation = "vacation"
 
 
 class InputPrompt(BaseModel):
@@ -18,4 +19,4 @@ class InputPrompt(BaseModel):
 class Post(BaseModel):
     category: CategoryEnum
     input_prompt: str
-    result: list[str]
+    result: str
