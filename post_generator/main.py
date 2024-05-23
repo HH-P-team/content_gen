@@ -1,41 +1,41 @@
-import instaloader
+from contextlib import asynccontextmanager
+
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from langchain.chat_models.gigachat import GigaChat
+
+from routes import routes
+from dependency import chat
+from core.config import CREDENTIALS
+from core.logger import logger
 
 
-def main() -> None:
-    
-    
-    pass
-    # Отправить роль
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    logger.info("Starting")
+    chat.chat = GigaChat(
+        credentials=CREDENTIALS,
+        verify_ssl_certs=False,
+    )
 
-    # вычленить смысл
-    # лемматизация
-    # удалить стоп слова
-    # удалить пунктуацию
-    # удалить числа
-    # удалить лишние пробелы
-    # удалить лишние символы
-    # удалить лишние слова
-    # сделать генерацию текста поста?
-
-    input_prompt = ...
-    lemma_prompt = input_prompt
-    filter_prompt = lemma_prompt
-    
-    send_to_neuro = filter_prompt
-    
-    get_prompt = send_to_neuro(chat_gpt)
-
-    check_prompt = get_prompt
+    yield
+    logger.info("Closing")
 
 
-if __name__ == "__main__":
-    L = instaloader.Instaloader()
+app = FastAPI(
+    lifespan=lifespan,
+    openapi_url="/api/openapi.json",
+    docs_url="/api/openapi",
+    redoc_url=None,
+)
 
-    for post in instaloader.Hashtag.from_name(L.context, "foodie").get_posts():
-        # print(post)
-        # post is an instance of instaloader.Post
-        L.download_post(post, target="#foodie")
 
-# instaloader profile catworld_id
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-    # main()
+app.include_router(routes)

@@ -83,7 +83,19 @@ services:
         condition: service_started
     expose:
       - "8001"
-      
+
+  post_generator:
+    container_name: post_generator
+    volumes:
+      - ./post_generator:/app
+    env_file: ./config/post_generator/.post_generator.env
+    build:
+      context: .
+      dockerfile: dockerization/Dockerfile.post_generator
+    command: bash -c "uvicorn main:app --reload --workers 1 --host 0.0.0.0 --port 8000"
+    ports:
+      - 8003:8000
+
   limiter:
     image: redis:latest
     command: /bin/sh -c "redis-server --requirepass $$REDIS_PASSWORD"
