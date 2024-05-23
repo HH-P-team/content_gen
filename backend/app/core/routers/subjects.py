@@ -17,19 +17,26 @@ async def get_all_subject(id: int = 0, db: AsyncSession = Depends(get_async_db))
     result = await db.execute(stmt)
     return {"status": True, "result": result.mappings().all()}
 
+
 @router.post('/')
 async def create_subject(
     request: SubjectPostQuery, db: AsyncSession = Depends(get_async_db)
 ):  
     #TODO убрать проверки, добавить ограничение на уникальность имени
-    name = request.name
+    name = request.subject_name
     stmt = select(Subject).where(Subject.name == name)
     result = await db.scalar(stmt)
 
     if result:
         return {'status': False, 'message': 'Данная категория уже существует'}
     
-
     db.add(Subject(name=name))
     await db.commit()
-    return {'status': True, 'message': 'Категория успешно добавлена'}
+
+    stmt = select(Subject).where(Subject.name == name)
+    result = await db.scalar(stmt)
+
+    return {'status': True, 
+            'result': {'name': result.name,
+                       'id': result.id,
+                       }}

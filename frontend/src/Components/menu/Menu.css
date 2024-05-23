@@ -1,8 +1,6 @@
 .Menu {
-    flex-grow: 1;
-    /* position: fixed;
-    margin: 15vmin; */
-    /* max-width: 250px; */
+    position: sticky;
+    top: 200px;
     width: 100%;
     padding: 20px;
     border-radius: 40px;

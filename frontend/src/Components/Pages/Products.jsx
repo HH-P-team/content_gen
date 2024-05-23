@@ -1,30 +1,21 @@
 import './Products.css';
 import Section from '../Section/Section';
-import getAllProducts from '../../api/products/product.api';
 import PageWrapper from './PageWrapper';
-import Button from '../Button/Button';
-import { useState, useEffect } from 'react';
+
+import { useSelector, useDispatch } from 'react-redux'
 
 export default function Products(props) {
-    const [data, setData] = useState([]);
 
-    useEffect(() => {
-        getAllProducts().then((data) => {
-            if (data.status) {
-                // console.log(data.result);
+    const dispatch = useDispatch()
+
+    return (
+        <PageWrapper
+            pageName={'Продукты'}
+            content={
+                <div className="Products">
+                    {props.data.map((elem) => <Section name={elem.name} key={elem.id} id={elem.id}/>)}
+                </div>
             }
-        });
-    }, []);
-
-  return (
-      <PageWrapper
-          pageName={'Продукты'}
-          controlElement={<Button name={'Добавить'} action={() => console.log('trololo')}/>}
-          content={
-              <div className="Products">
-                  {props.data.map((elem) => <Section name={elem.name} key={elem.id} />)}
-              </div>
-          }
-      />
-  );
+        />
+    );
 }

@@ -8,6 +8,7 @@ from fastapi.responses import ORJSONResponse
 from fastapi_limiter import FastAPILimiter
 
 from starlette.middleware.sessions import SessionMiddleware
+from fastapi.middleware.cors import CORSMiddleware
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
 
 from helpers.tracer import configure_tracer
@@ -37,6 +38,17 @@ async def startup():
 
 
 app.add_middleware(SessionMiddleware, secret_key="secret!")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials="*",
+    allow_methods=["*"],
+    allow_headers=["*"],
+    # allow_origins=[ALLOW_ORIGINS],
+    # allow_credentials=ALLOW_CREDENTIALS,
+    # allow_methods=[ALLOW_METHODS],
+    # allow_headers=[ALLOW_HEADERS],
+)
 
 
 @app.middleware("http")

@@ -1,0 +1,136 @@
+version: "3.8"
+
+services:
+  db:
+    container_name: ${POSTGRES_HOST}
+    image: postgres:latest
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB_NAME}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data/pgdata
+    healthcheck:
+      test: pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB_NAME}
+      interval: 10s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+    ports:
+      - 5432:${POSTGRES_PORT}
+    networks:
+      - backend
+
+  users-db:
+    container_name: users-db
+    image: postgres:latest
+    env_file: ./config/users_db/.user_db.env
+    volumes:
+      - ./dbdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+    command: -p 5433
+    ports:
+      - "5433:5433"
+    expose:
+      - "5433"
+
+  api:
+    container_name: ${API_HOST}
+    build:
+      context: ./
+      dockerfile: ./backend/Dockerfile
+    env_file:
+      - .env
+    volumes:
+      - ./commons:/opt/app/commons
+      - ./staticfiles:/opt/app/staticfiles
+    depends_on:
+      - db
+    ports:
+      - 8000:${API_PORT}
+    networks:
+      - backend
+      - frontend
+
+  auth-service:
+    container_name: auth-service
+    volumes:
+      - ./authservice/src:/app
+    env_file: ./config/authservice/.auth.env
+    build:
+      context: .
+      dockerfile: dockerization/Dockerfile.auth
+    command: bash -c "cd /app && alembic upgrade head && uvicorn main:app --reload --workers 1 --host 0.0.0.0 --port 8001"
+    depends_on:
+      users-db:
+        condition: service_healthy
+      limiter:
+        condition: service_started
+    ports:
+      - 8001:8001
+
+  limiter:
+    image: redis:latest
+    command: /bin/sh -c "redis-server --requirepass $$REDIS_PASSWORD"
+    volumes:
+      - limiter:/data
+    env_file: ./config/limiter/.limiter.env
+    expose:
+      - "6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+
+  front:
+    container_name: front
+    command: bash -c "npm run build /opt/app/build && npm run start"
+    build: 
+      context: ./frontend
+      dockerfile: ./Dockerfile.dev
+    env_file:
+      - .env
+    depends_on:
+      - api
+    environment:
+      - REACT_APP_SERVER_API:${REACT_APP_SERVER_API}
+      - REACT_AUTH_SERVER_API:${REACT_AUTH_SERVER_API}
+    ports:
+      - ${FRONTEND_PORT}:3000
+    networks:
+      - frontend
+    volumes:
+      - ./frontend/src:/opt/app/src
+      - ./frontend/build:/opt/app/build
+
+  nginx-proxi-pass:
+    restart: always
+    build:
+      context: .
+      dockerfile: dockerization/Dockerfile.nginx
+    depends_on:
+      - auth-service
+    ports:
+      - 80:80
+
+networks:
+  backend:
+    driver: bridge
+
+  frontend:
+    driver: bridge
+
+volumes:
+  limiter:
+    driver: local
+  dbdata:
+    driver: local

@@ -29,7 +29,7 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     /* -webkit-backdrop-filter: blur(5px); */
-    backdrop-filter: blur(100px);
+    /* backdrop-filter: blur(100px); */
 }
 
 * {

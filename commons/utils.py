@@ -1,6 +1,6 @@
 from commons.neuro_gateway.mistral import Mistral
 
-def get_product(api: Mistral, subject: str, except_words) -> str:
+def get_product(api: Mistral, subject: str) -> str:
     """
     """
     return api.send_message(
