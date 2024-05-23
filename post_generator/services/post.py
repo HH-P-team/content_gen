@@ -50,3 +50,15 @@ class PostService:
 
 def get_post_service(chat: GigaChat = Depends(get_chat)) -> PostService:
     return PostService(chat=chat)
+
+
+
+    # input_prompt = ...
+    # lemma_prompt = input_prompt
+    # filter_prompt = lemma_prompt
+    
+    # send_to_neuro = filter_prompt
+    
+    # get_prompt = send_to_neuro(chat_gpt)
+
+    # check_prompt = get_prompt
