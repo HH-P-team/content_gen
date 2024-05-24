@@ -49,7 +49,7 @@ services:
 
   api:
     container_name: api
-    build: 
+    build:
       context: ./
       dockerfile: ./backend/Dockerfile
     env_file:
@@ -89,7 +89,8 @@ services:
     volumes:
       - ./image_core/src:/app
       - ./app_data/datasets:/app/datasets
-      - ./staticfiles:/app/downloads
+      - ./downloads:/app/downloads
+      - ./staticfiles:/app/arts
     env_file:
       - .env
     build:
@@ -104,7 +105,7 @@ services:
     container_name: text_core
     volumes:
       - ./text_core:/app
-    env_file: 
+    env_file:
       - .env
     build:
       context: ./
@@ -120,7 +121,7 @@ services:
     command: /bin/sh -c "redis-server --requirepass $$REDIS_PASSWORD"
     volumes:
       - limiter:/data
-    env_file: 
+    env_file:
       - .env
     expose:
       - 6379
