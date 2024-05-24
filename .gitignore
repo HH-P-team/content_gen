@@ -9,8 +9,13 @@ env/
 /pgdata*
 dbdata/
 __pycache__/
+datasets/
+downloads/
 
 node_modules/
 *.pyc
 
 staticfiles/*.png
+
+kukmber.py
+resnet_image_features_*

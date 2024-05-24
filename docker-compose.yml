@@ -87,8 +87,33 @@ services:
         condition: service_started
     expose:
       - "8001"
+
+  neuralapi-service:
+    container_name: neuralapi-service
+    volumes:
+      - ./neuralapi/src:/app
+      - ./datasets:/app/datasets
+      - ./downloads:/app/downloads
+    env_file: ./config/neuralapi/.neuro.env
+    build:
+      context: .
+      dockerfile: dockerization/Dockerfile.neuro
+    ports:
+      - "8012:8012"
     networks:
       - backend
+
+  post_generator:
+    container_name: post_generator
+    volumes:
+      - ./post_generator:/app
+    env_file: ./config/post_generator/.post_generator.env
+    build:
+      context: .
+      dockerfile: dockerization/Dockerfile.post_generator
+    command: bash -c "uvicorn main:app --reload --workers 1 --host 0.0.0.0 --port 8000"
+    ports:
+      - 8003:8000
 
   limiter:
     image: redis:latest
@@ -105,7 +130,7 @@ services:
 
   front:
     container_name: front
-    build: 
+    build:
       context: ./
       dockerfile: ./frontend/Dockerfile
     env_file:
@@ -135,7 +160,6 @@ services:
 networks:
   backend:
     driver: bridge
-
   frontend:
     driver: bridge
 

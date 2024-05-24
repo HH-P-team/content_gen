@@ -1,6 +1,7 @@
 import Modal from "../modal/modal";
 import LoginForm from "../auth/login";
 import { useState, useContext } from "react";
+import { Navigate } from "react-router-dom";
 import { postRegistration, postAuthenticate } from "../../api/auth/auth.api.js";
 import { UserContext } from "../../context/context.jsx";
 import { AppContext } from "../../context/context.jsx";
