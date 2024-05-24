@@ -1,23 +1,30 @@
-from sqlalchemy import Boolean, ForeignKey, LargeBinary, String
+from datetime import datetime
+from uuid import UUID
+
+from sqlalchemy import Boolean, DateTime, ForeignKey, String, Uuid, func
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
-#TODO Добавить в миксины created, updated
 
 class Base(DeclarativeBase):
     pass
 
 class Mixin:
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=func.now())
+    updated_at: Mapped[datetime] = mapped_column(DateTime,
+                                                  default=func.now(), onupdate=func.now())
 
 
 class Subject(Base, Mixin):
     __tablename__ = 'subject'
 
     name: Mapped[str] = mapped_column(String(100))
-    products: Mapped[list['Product']] = relationship(
-        back_populates="subject", cascade="all, delete-orphan"
-        )
-    image: Mapped['Image'] = relationship(back_populates='subject', lazy='selectin')
+    products: Mapped[list['Product']] = relationship(back_populates='subject',
+                                                     lazy='selectin',
+                                                     cascade='all, delete-orphan')
+    image: Mapped['Image'] = relationship(back_populates='subject', 
+                                          lazy='selectin',
+                                          cascade='all, delete-orphan')
     
     def __repr__(self) -> str:
         return f'Subject(id={self.id}, name={self.name})'
@@ -26,14 +33,16 @@ class Subject(Base, Mixin):
 class Product(Base, Mixin):
     __tablename__ = 'product'
 
-    name: Mapped[str] = mapped_column(String(100))
-    description: Mapped[str] = mapped_column(String(100))
-    subject_id: Mapped[int] = mapped_column(ForeignKey("subject.id"))
+    name: Mapped[str] = mapped_column(String(100), nullable=True)
+    description: Mapped[str] = mapped_column(String(100), nullable=True)
+    subject_id: Mapped[int] = mapped_column(ForeignKey('subject.id'))
     subject: Mapped['Subject'] = relationship(back_populates='products')
-    posts: Mapped[list['Post']] = relationship(
-        back_populates="product", cascade="all, delete-orphan"
-        )
-    image: Mapped['Image'] = relationship(back_populates='product')
+    posts: Mapped[list['Post']] = relationship(back_populates='product',
+                                               lazy='selectin',
+                                               cascade='all, delete-orphan')
+    image: Mapped['Image'] = relationship(back_populates='product',
+                                          lazy='selectin',
+                                          cascade='all, delete-orphan')
 
     def __repr__(self) -> str:
         return f'Product(id={self.id}, name={self.name})'
@@ -44,9 +53,11 @@ class Post(Base, Mixin):
 
     name: Mapped[str] = mapped_column(String(100))
     description: Mapped[str] = mapped_column(String(1000))
-    product_id: Mapped[int] = mapped_column(ForeignKey("product.id"))
+    query: Mapped[str] = mapped_column(String(1000))
+    product_id: Mapped[int] = mapped_column(ForeignKey('product.id'))
     product: Mapped['Product'] = relationship(back_populates='posts')
-    image: Mapped['Image'] = relationship(back_populates='post')
+    image: Mapped['Image'] = relationship(back_populates='post',
+                                          cascade='all, delete-orphan')
 
     def __repr__(self) -> str:
         return f'Post(id={self.id}, name={self.name})'
@@ -55,14 +66,14 @@ class Post(Base, Mixin):
 class Image(Base, Mixin):
     __tablename__ = 'image'
 
-    payload: Mapped[bytes] = mapped_column(LargeBinary)
-    subject_id: Mapped[int] = mapped_column(ForeignKey("subject.id"), nullable=True)
+    uuid: Mapped[UUID] = mapped_column(Uuid)
+    subject_id: Mapped[int] = mapped_column(ForeignKey('subject.id'), nullable=True)
     subject: Mapped['Subject'] = relationship(back_populates='image')
-    product_id: Mapped[int] = mapped_column(ForeignKey("product.id"), nullable=True)
+    product_id: Mapped[int] = mapped_column(ForeignKey('product.id'), nullable=True)
     product: Mapped['Product'] = relationship(back_populates='image')
-    post_id: Mapped[int] = mapped_column(ForeignKey("post.id"), nullable=True)
+    post_id: Mapped[int] = mapped_column(ForeignKey('post.id'), nullable=True)
     post: Mapped['Post'] = relationship(back_populates='image')
-    in_progress: Mapped[bool] = mapped_column(Boolean, default=False, nullable=True)
+    in_progress: Mapped[bool] = mapped_column(Boolean, default=True, nullable=True)
 
     def __repr__(self) -> str:
         return f'Image(id={self.id})'
