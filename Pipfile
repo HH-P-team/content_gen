@@ -15,6 +15,7 @@ apscheduler = "*"
 pydantic-settings = "*"
 pydantic-core = "*"
 asyncpg = "*"
+langchain = "*"
 
 [dev-packages]
 

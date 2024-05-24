@@ -104,10 +104,10 @@ services:
     networks:
       - backend
 
-  post_generator:
-    container_name: post_generator
+  trxt_core:
+    container_name: trxt_core
     volumes:
-      - ./post_generator:/app
+      - ./trxt_core:/app
     env_file: ./config/post_generator/.post_generator.env
     build:
       context: .
