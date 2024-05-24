@@ -22,13 +22,17 @@ class MyConfig(BaseSettings):
     auth_host: str = "localhost"
     auth_port: int = 8000
 
-    postgres_host: str = "127.0.0.45"
-    postgres_port: int = 5432
+    pg_host: str = "127.0.0.45"
+    pg_port: int = 5432
 
-    postgres_db_auth: str = "POSTGRES_DB_AUTH"
-    postgres_db_auth_schema: str = "auth"
-    postgres_user: str = "POSTGRES_USER"
-    postgres_password: str = "POSTGRES_PASSWORD"
+    auth_postgres_host: str = "localhost"
+    auth_postgres_port: str = 5433
+
+    auth_postgres_db_name: str = "POSTGRES_DB_AUTH"
+    auth_postgres_scheme: str = "auth"
+
+    auth_postgres_user: str = "AUTH_POSTGRES_USER"
+    auth_postgres_password: str = "AUTH_POSTGRES_PASSWORD"
 
     redis_host: str = "127.0.0.1"
     redis_port: int = 6379
@@ -41,20 +45,14 @@ class MyConfig(BaseSettings):
     jwt_algorithm: str = "JWT_ALGORITHM"
 
     admin_level: int = 5
-    
-    # ALLOW_ORIGINS = str(os.getenv("ALLOW_ORIGINS", ""))
-    # ALLOW_CREDENTIALS = bool(int(os.getenv("ALLOW_CREDENTIALS", 0)))
-    # ALLOW_METHODS = str(os.getenv("ALLOW_METHODS", ""))
-    # ALLOW_HEADERS = str(os.getenv("ALLOW_HEADERS", ""))
-
 
 
 settings = MyConfig()
 settings.dsl_auth = URL.create(
     "postgresql+asyncpg",
-    username=settings.postgres_user,
-    password=settings.postgres_password,
-    host=settings.postgres_host,
-    port=settings.postgres_port,
-    database=settings.postgres_db_auth,
+    username=settings.auth_postgres_user,
+    password=settings.auth_postgres_password,
+    host=settings.auth_postgres_host,
+    port=settings.auth_postgres_port,
+    database=settings.auth_postgres_db_name,
 )
