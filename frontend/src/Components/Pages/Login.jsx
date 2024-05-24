@@ -1,10 +1,10 @@
 import Modal from "../modal/modal";
 import LoginForm from "../auth/login";
-
 import { useState, useContext } from "react";
 import { postRegistration, postAuthenticate } from "../../api/auth/auth.api.js";
 import { UserContext } from "../../context/context.jsx";
 import { AppContext } from "../../context/context.jsx";
+import { Navigate } from "react-router-dom";
 
 export default function Login({ auth }) {
   const [error, setError] = useState("");
@@ -67,7 +67,7 @@ export default function Login({ auth }) {
       }
     } catch (error) {
       console.error(error);
-      setError(err.message);
+      setError(error.message);
     }
     disable(false);
   };

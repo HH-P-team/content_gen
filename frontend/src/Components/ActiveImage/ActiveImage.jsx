@@ -1,13 +1,10 @@
 import './ActiveImage.css';
-import Progress from '../Progress/Progress';
 
 export default function ActiveImage(props) {
-
-    if (!props.data) {
-        return (<Progress/>)
-    }
-
     return (
-        <img className="ActiveImage" src={"data:image/png;base64, " + props.data}/>
+        <img 
+            className="ActiveImage"
+            src={`http://localhost:8000/product_images/${props.data ? props.data.uuid : 'trololo'}.png`}
+        />
     );
 }

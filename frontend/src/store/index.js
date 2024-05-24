@@ -23,29 +23,45 @@ import { configureStore } from '@reduxjs/toolkit';
 // 			};
 // 		default:
 // 			return prevState;
-// 	}
-// };
 
-// export default configureStore({ reducer: mainReducer });
 
 const mainReducer = (
 	prevState = {
-		buttonState: 1,
-		buttonState1: 2,
+		activeElementId: 0,
 		addSubjectMenuState: false,
+		addProductMenuState: false,
+		addPostMenuState: false,
 		subjects: [],
-		products: {},
-		posts: {},
+		// products: {},
+		// posts: {},
 	},
 	action
 ) => {
 	const { type, value } = action;
 
 	switch (type) {
+		case 'CASE_SET_ACTIVE_ELEMENT_ID':
+			return {
+				...prevState,
+				activeElementId: value,
+			};
+
 		case 'CASE_SUBJECT_MENUSTATE':
 			return {
 				...prevState,
 				addSubjectMenuState: value,
+			};
+
+		case 'CASE_PRODUCT_MENUSTATE':
+			return {
+				...prevState,
+				addProductMenuState: value,
+			};
+
+		case 'CASE_POST_MENUSTATE':
+			return {
+				...prevState,
+				addPostMenuState: value,
 			};
 
 		case 'CASE_ADD_SUBJECTS':
@@ -61,32 +77,26 @@ const mainReducer = (
 			};
 
 		case 'CASE_ADD_PRODUCT':
-			var { subjectId, product} = value;
-
-			const prevProduct = prevState.products[subjectId] ? prevState.products[subjectId] : []
-
+			const [ product ] = value;
+			const { subject_id: subjectId} = product;
+			const index = prevState.subjects.findIndex((el) => el.subjectId === subjectId);
+			console.log(index);
+			// const updatedSubject = prevState.subjects.filter((subject) => subject.id === subjectId)[0]
 			return {
 				...prevState,
-				products: {
-					...prevState.products,
-					...{[subjectId]: [...prevProduct, ...[product]]},
-				}
-			};
-	
-		case 'CASE_SET_PRODUCTS':
-			var { subjectId, product} = value;
-			
-			return {
-				...prevState,
-				products: {
-					...prevState.products,
-					...{[subjectId]: product},
-				}
-			};
+				subjects: [
+					...prevState.subjects.filter((subject) => subject.id !== subjectId), 
+					...prevState.subjects.filter((subject) => subject.id === subjectId)
+				]
+				};
 
 		default:
 			return prevState;
 	}
+}
+
+function updateSubject() {
+
 }
 
 export default configureStore({ reducer: mainReducer });

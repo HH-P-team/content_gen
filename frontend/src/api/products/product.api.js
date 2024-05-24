@@ -20,11 +20,13 @@ export const getProductsBySubjectId = async (subjectId) => {
 	return data;
 }
 
-export const createProduct = async (subjectId) => {
-	console.log('createProduct');
+export const createProduct = async (subjectId, productName) => {
 	const { data } = await $host.post(
 		'/products', 
-		{subject_id: subjectId},
+		{
+			subject_id: subjectId,
+			product_name: productName,
+		},
 	);
 	return data;
 }

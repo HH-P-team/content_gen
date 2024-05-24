@@ -1,8 +1,6 @@
+import "./modal.css";
 import { useContext, useEffect } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-
-import "./modal.css";
-
 import { AppContext } from "../../context/context.jsx";
 
 export default function Modal({ title, content, contentObject }) {

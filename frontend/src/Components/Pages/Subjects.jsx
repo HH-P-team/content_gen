@@ -1,9 +1,7 @@
 import './Subjects.css';
 import PageWrapper from './PageWrapper';
 import Card from '../Card/Card';
-import Button from '../Button/Button';
 import AddSubjectForm from '../Forms/AddSubjectForm';
-import getImageByText from '../../api/images/image.api';
 
 export default function Subjects(props) {
     return (
@@ -17,8 +15,7 @@ export default function Subjects(props) {
                         name={elem.name} 
                         key={elem.id} 
                         id={elem.id} 
-                        request={getImageByText}
-                        params={elem.name}
+                        img={elem.image}
                         />
                       )}
                 </div>

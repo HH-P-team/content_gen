@@ -1,30 +1,31 @@
 import './AddSubjectForm.css';
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { createSubject } from '../../api/subjects/subject.api';
+import { createProduct } from '../../api/products/product.api';
 import Button from '../Button/Button';
 import toast from 'react-hot-toast';
 
-export default function AddSubjectForm(props) {
+export default function AddProductForm(props) {
 
-    const [subjectName, setSubjectName] = useState('')
+    const [productName, setProductName] = useState('')
     const dispatch = useDispatch();
-    const visibleMenu = useSelector((state) => state.addSubjectMenuState)
+    const visibleMenu = useSelector((state) => state.addProductMenuState)
+    const activeElementId = useSelector((state) => state.activeElementId)
 
-    const handleSubmit = (e, subjectName) => {
-        
-        dispatch({ type: 'CASE_SUBJECT_MENUSTATE', value: !visibleMenu })
-        console.log();
-        if (!subjectName) {
+    const handleSubmit = (e, productName) => {
+        dispatch({ type: 'CASE_PRODUCT_MENUSTATE', value: !visibleMenu })
+
+        if (!productName) {
             e.preventDefault();
             return
         }
         
         const toastId = toast.loading('Выполняется подготовка карточки');
 
-        createSubject(subjectName).then((data) => {
+        createProduct(props.subjectId, productName).then((data) => {
             if (data.status) {
-                dispatch({ type: 'CASE_ADD_SUBJECTS', value: [data.result] })
+                dispatch({ type: 'CASE_ADD_PRODUCT', value: [data.result] })
+                // console.log(data.result);
                 toast.success('Карточка готова!', {
                     id: toastId,
                 });
@@ -32,29 +33,30 @@ export default function AddSubjectForm(props) {
         });
 
 
-        setSubjectName('');
+        setProductName('');
         e.preventDefault();
     };
 
     const handleInput = (e) => {
 
-        setSubjectName(e.target.value);
+        setProductName(e.target.value);
         e.preventDefault();
     }
 
     const handleCkick = () => {
-        dispatch({ type: 'CASE_SUBJECT_MENUSTATE', value: !visibleMenu });
+        dispatch({ type: 'CASE_SET_ACTIVE_ELEMENT_ID', value: props.subjectId });
+        dispatch({ type: 'CASE_PRODUCT_MENUSTATE', value: !visibleMenu });
     }
 
-    if (visibleMenu) {
+    if (visibleMenu && activeElementId === props.subjectId) {
         return (
             <div>
-                <form className='AddSubjectForm' onSubmit={(e) => handleSubmit(e, subjectName)}>
+                <form className='AddSubjectForm' onSubmit={(e) => handleSubmit(e, productName)}>
                     <div className='InputWrapper'>
                         <input 
                             className={'FormInput'} 
                             name={'input'}
-                            value={subjectName} 
+                            value={productName} 
                             onInput={handleInput} 
                             placeholder={'Введите...'}
                         />
@@ -64,6 +66,6 @@ export default function AddSubjectForm(props) {
             </div>
         );
     } else {
-        return (<Button name={'Добавить'} action={handleCkick}/>)
+        return (<Button name={'Добавить продукт'} action={handleCkick}/>)
     }
 }

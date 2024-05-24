@@ -5,7 +5,7 @@ import MenuButton from "./MenuButton";
 import { UserContext } from "../../context/context.jsx";
 
 export default function Menu(props) {
-  const { userData } = useContext(UserContext);
+  // const { userData } = useContext(UserContext);
 
   return (
     <div className="Menu">
@@ -15,7 +15,7 @@ export default function Menu(props) {
       <MenuButton path={"/profile"} name="Профиль" />
       <MenuButton path={"/about"} name="О проекте" />
       <MenuButton path={"/help"} name="Помощь" />
-      {userData && <MenuButton path={"/logout"} name="Выйти" />}
+      {/* {userData && <MenuButton path={"/logout"} name="Выйти" />} */}
     </div>
   );
 }

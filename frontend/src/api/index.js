@@ -1,4 +1,5 @@
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 
 export const $host = axios.create({
@@ -12,6 +13,11 @@ export const $auth = axios.create({
     withCredentials: true,
 });
 
+$auth.interceptors.response.use(
+    response => response,
+    error => {
+        toast.error(error);
+    });
 
 $auth.interceptors.request.use((config) => {
     config.headers.Authorization = `Bearer ${localStorage.getItem('access_token')}`;
