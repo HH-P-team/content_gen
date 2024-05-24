@@ -79,7 +79,7 @@ services:
     env_file: .env
     build:
       context: ./
-      dockerfile: dockerization/Dockerfile.auth
+      dockerfile: ./auth/Dockerfile.
     command: bash -c "cd /app && alembic upgrade head && uvicorn main:app --reload --workers 1 --host 0.0.0.0 --port 8001"
     depends_on:
       users-db:
@@ -99,7 +99,7 @@ services:
       - .env
     build:
       context: ./
-      dockerfile: image_core/Dockerfile
+      dockerfile: ./image_core/Dockerfile
     ports:
       - 8012:8012
     networks:
@@ -113,7 +113,7 @@ services:
       - .env
     build:
       context: ./
-      dockerfile: dockerization/Dockerfile.post_generator
+      dockerfile: ./text_core/Dockerfile
     command: bash -c "uvicorn main:app --reload --workers 1 --host 0.0.0.0 --port 8000"
     ports:
       - 8003:8000
@@ -152,7 +152,7 @@ services:
     restart: always
     build:
       context: ./
-      dockerfile: dockerization/Dockerfile.nginx
+      dockerfile: nginx/Dockerfile
     depends_on:
       - auth-service
     ports:
