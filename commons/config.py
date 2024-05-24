@@ -24,6 +24,8 @@ class Settings(BaseSettings):
     api_port: int = Field(alias='API_PORT')
     api_prefix: str = Field(alias='API_PREFIX')
 
+    staticfiles_path: str = Field(alias='STATICFILES_PATH')
+
     @field_validator('database_uri')
     def assemble_db_connection(
         cls, 

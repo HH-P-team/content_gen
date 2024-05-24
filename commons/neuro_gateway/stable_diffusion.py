@@ -32,11 +32,14 @@ class StableDiffusion(API):
         resp = self.send_post(URL, data)
         return resp[1]['message']['id']
 
-    def get_image(self, message: str) -> None:
+    def get_image(self,
+                  message: str,
+                  filepath: str,
+                  filename: str) -> None:
         """
         """
         id = self.get_image_id(message)
-        self.download_image_by_id(id)
+        self.download_image_by_id(id, filepath, filename)
 
     def get_image_payload_by_id(self, id: int) -> bytes:
         params = {
@@ -46,11 +49,14 @@ class StableDiffusion(API):
 
         return self.send_get(DOWN_URL, params=params)
 
-    def download_image_by_id(self, id: int) -> None:
+    def download_image_by_id(self,
+                             id: int,
+                             filepath: str,
+                             filename: str) -> None:
         """
         """
 
         res = self.get_image_payload_by_id(id)
 
-        with open('file.jpg', 'wb') as f:
+        with open(f'{filepath}/{filename}.png', 'wb') as f:
             f.write(res)

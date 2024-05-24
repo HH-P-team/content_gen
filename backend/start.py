@@ -13,4 +13,5 @@ if __name__ == '__main__':
         port=settings.api_port,
         reload=True,
         loop='uvloop',
+        workers=4,
     )
