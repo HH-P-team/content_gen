@@ -6,6 +6,7 @@ from sqlalchemy import select
 from commons.neuro_gateway.mistral import Mistral
 from commons.neuro_gateway.stable_diffusion import StableDiffusion
 
+
 from commons.models import Image, Subject
 from commons.db import get_db
 
@@ -28,7 +29,9 @@ api_key = settings.mistral_api_key
 #     session.commit()
 
 for session in get_db():
-    res = session.scalar(select(Subject).where(Subject.name == 'Бьюти индустрия1'))
+    res = session.scalar(
+        select(Subject).where(Subject.name == "Бьюти индустрия1")
+    )
 
     print(res)
     if res:
