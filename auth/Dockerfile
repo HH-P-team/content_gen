@@ -11,3 +11,6 @@ COPY ./auth/requirements.txt /app/requirements.txt
 RUN pip install --upgrade pip setuptools wheel \
     && pip install -r /app/requirements.txt \
     && rm -rf /root/.cache/pip
+
+
+ENTRYPOINT [ "python", "main.py" ]

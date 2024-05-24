@@ -35,15 +35,12 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - ./app_data/auth_pgdata:/var/lib/postgresql/data/pgdata
-    healthcheck:
-      test: pg_isready -U ${AUTH_POSTGRES_USER} -d ${AUTH_POSTGRES_DB_NAME}
-      interval: 10s
-      timeout: 30s
-      retries: 5
-      start_period: 30s
     restart: unless-stopped
+    command: -p ${AUTH_POSTGRES_PORT}
+    expose:
+      - ${AUTH_POSTGRES_PORT}
     ports:
-      - 5433:${AUTH_POSTGRES_PORT}
+      - ${AUTH_POSTGRES_PORT}:${AUTH_POSTGRES_PORT}
     networks:
       - backend
 
@@ -65,7 +62,6 @@ services:
       - 8000:${API_PORT}
     networks:
       - backend
-      # - frontend
 
   auth:
     container_name: auth
@@ -75,7 +71,6 @@ services:
     build:
       context: ./
       dockerfile: ./auth/Dockerfile
-    command: bash -c "cd /app && alembic upgrade head && uvicorn main:app --reload --workers 1 --host 0.0.0.0 --port 8001"
     depends_on:
       users-db:
         condition: service_healthy
@@ -83,6 +78,8 @@ services:
         condition: service_started
     expose:
       - 8001
+    networks:
+      - backend
 
   image_core:
     container_name: image_core
