@@ -5,5 +5,5 @@ ENV TZ=UTC
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 
-COPY ./config/nginx/nginx_poxi.conf /etc/nginx/conf.d/default.conf
-COPY ./config/nginx/nginx.conf /etc/nginx/
+COPY ./nginx_poxi.conf /etc/nginx/conf.d/default.conf
+COPY ./nginx.conf /etc/nginx/

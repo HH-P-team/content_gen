@@ -6,7 +6,7 @@ WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-COPY ./config/post_generator/requirements.txt /app/requirements.txt
+COPY ./requirements.txt /app/requirements.txt
 
 RUN pip install --upgrade pip setuptools wheel \
     && pip install -r /app/requirements.txt \

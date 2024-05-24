@@ -1,3 +1,0 @@
-POSTGRES_USER=rtkit
-POSTGRES_PASSWORD=rtkit_oss
-POSTGRES_DB=auth

@@ -6,8 +6,8 @@
 
 venv/
 env/
-/pgdata*
-dbdata/
+
+app_data/
 __pycache__/
 datasets/
 downloads/
@@ -19,4 +19,5 @@ staticfiles/*.png
 staticfiles/*.jpg
 
 kukmber.py
+exp.py
 resnet_image_features_*

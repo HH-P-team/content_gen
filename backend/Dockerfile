@@ -1,7 +1,5 @@
 FROM python:3.10.12
 
-RUN echo $API_PORT
-
 RUN pip3 install pipenv
 
 WORKDIR /opt/app
