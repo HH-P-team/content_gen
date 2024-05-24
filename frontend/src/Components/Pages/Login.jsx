@@ -5,7 +5,7 @@ import { Navigate } from "react-router-dom";
 import { postRegistration, postAuthenticate } from "../../api/auth/auth.api.js";
 import { UserContext } from "../../context/context.jsx";
 import { AppContext } from "../../context/context.jsx";
-import { Navigate } from "react-router-dom";
+// import { Navigate } from "react-router-dom";
 
 export default function Login({ auth }) {
   const [error, setError] = useState("");

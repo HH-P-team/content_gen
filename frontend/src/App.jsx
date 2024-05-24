@@ -23,12 +23,12 @@ import Cookies from "js-cookie";
 import { UserContext } from "./context/context";
 
 export default function App() {
-  const [data, setData] = useState([]);
+    const [data, setData] = useState([]);
   // const { setUser } = useContext(UserContext);
 
   // const [data, setData] = useState([]);
-  const dispatch = useDispatch();
-  const subjects = useSelector((state) => state.subjects);
+    const dispatch = useDispatch();
+    const subjects = useSelector((state) => state.subjects);
 
   // const fetch = useMemo(
   //   () => async () => {
@@ -39,47 +39,44 @@ export default function App() {
   //   },
   //   [setUser]
   // );
+    useEffect(() => {
+        getAllSubjects().then((data) => {
+        if (data.status) {
+            dispatch({ type: "CASE_SET_SUBJECTS", value: data.result });
+            // console.log(data.result);
+        }});
 
-  useEffect(() => {
-    getAllSubjects().then((data) => {
-      if (data.status) {
-        dispatch({ type: "CASE_SET_SUBJECTS", value: data.result });
-        // console.log(data.result);
-      }
-    });
+        // fetch();
+    }, []);
 
-    // fetch();
-  }, []);
-
-  return (
-    <div className="App">
+    return (
+        <div className="App">
         <Toaster
-          position="top-right"
-          reverseOrder={false}
+            position="top-right"
+            reverseOrder={false}
         />
-      <BrowserRouter>
-        <Sidebar />
-        <div className="Wrapper">
-          <Header />
-          <Routes>
-              <Route path="*" element={<Subjects data={subjects} />} />
-              <Route path="products" element={<Products data={subjects} />} />
-              <Route path="posts" element={<Posts />} />
-              <Route path="about" element={<About />} />
-              <Route path="help" element={<Help />} />
-            {/* <Route path="/">
-              {/* <Route element={<PrivateRoute redirectPath={"login"} />}> */}
-                {/* <Route path="profile" element={<Profile />} />
-                <Route path="logout" element={<Logout />} />
-              </Route> */}
-              {/* <Route path="login" element={<Login auth={false} />} />
-              <Route path="auth" element={<Login auth={true} />} />
-              <Route path="*" element={<NotFound />} /> */}
-            {/* </Route> */} */
-          </Routes>
-          <Footer />
-        </div>
-      </BrowserRouter>
-    </div>
-  );
+        <BrowserRouter>
+            <Sidebar />
+            <div className="Wrapper">
+                <Header />
+                <Routes>
+                    <Route path="*" element={<Subjects data={subjects} />} />
+                    <Route path="products" element={<Products data={subjects} />} />
+                    <Route path="posts" element={<Posts />} />
+                    <Route path="about" element={<About />} />
+                    <Route path="help" element={<Help />} />
+                {/* <Route path="/">
+                {/* <Route element={<PrivateRoute redirectPath={"login"} />}> */}
+                    {/* <Route path="profile" element={<Profile />} />
+                    <Route path="logout" element={<Logout />} />
+                </Route> */}
+                {/* <Route path="login" element={<Login auth={false} />} />
+                <Route path="auth" element={<Login auth={true} />} />
+                <Route path="*" element={<NotFound />} /> */}
+                {/* </Route> */} */
+                </Routes>
+                <Footer />
+            </div>
+        </BrowserRouter>
+    </div>);
 }
