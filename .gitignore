@@ -16,6 +16,7 @@ node_modules/
 *.pyc
 
 staticfiles/*.png
+staticfiles/*.jpg
 
 kukmber.py
 resnet_image_features_*

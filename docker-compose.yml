@@ -45,9 +45,9 @@ services:
     restart: unless-stopped
     command: -p 5433
     ports:
-      - "5433:5433"
+      - 5433:5433
     expose:
-      - "5433"
+      - 5433
     networks:
       - backend
 
@@ -86,20 +86,21 @@ services:
       limiter:
         condition: service_started
     expose:
-      - "8001"
+      - 8001
 
   neuralapi-service:
-    container_name: neuralapi-service
+    container_name: image_core
     volumes:
-      - ./neuralapi/src:/app
+      - ./image_core/src:/app
       - ./datasets:/app/datasets
-      - ./downloads:/app/downloads
-    env_file: ./config/neuralapi/.neuro.env
+      - ./staticfiles:/app/downloads
+    env_file:
+      - .env
     build:
       context: .
-      dockerfile: dockerization/Dockerfile.neuro
+      dockerfile: image_core/Dockerfile
     ports:
-      - "8012:8012"
+      - 8012:8012
     networks:
       - backend
 
@@ -152,7 +153,7 @@ services:
     depends_on:
       - auth-service
     ports:
-      - "80:80"
+      - 80:80
     networks:
       - backend
       - frontend
