@@ -29,6 +29,7 @@ class MyConfig(BaseSettings):
     dataset_dress_path: str = "datasets/dress"
 
     path_to_downloads: str = "downloads"
+    path_to_arts: str = "arts"
 
     sd_keys: str | list = "a, b, c"
     fb_api_key: str = "api_key"

@@ -11,6 +11,7 @@ app_data/
 __pycache__/
 datasets/
 downloads/
+arts/
 
 node_modules/
 *.pyc
