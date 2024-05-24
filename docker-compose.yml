@@ -2,10 +2,10 @@ version: "3.8"
 
 services:
   db:
-    container_name: ${POSTGRES_HOST}
+    container_name: db
     image: postgres:latest
     environment:
-      POSTGRES_DB: ${POSTGRES_DB_NAME}
+      POSTGRES_DB: service
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_PORT: ${POSTGRES_PORT}
@@ -25,30 +25,25 @@ services:
       - backend
 
   users-db:
-    container_name: ${AUTH_POSTGRES_HOST}
+    container_name: users-db
     image: postgres:latest
     environment:
       POSTGRES_DB: ${AUTH_POSTGRES_DB_NAME}
       POSTGRES_USER: ${AUTH_POSTGRES_USER}
       POSTGRES_PASSWORD: ${AUTH_POSTGRES_PASSWORD}
-      POSTGRES_PORT: ${AUTH_PGPORT}
+      POSTGRES_PORT: ${AUTH_POSTGRES_PORT}
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
-      - ./app_data/dbdata:/var/lib/postgresql/data
+      - ./app_data/auth_pgdata:/var/lib/postgresql/data/pgdata
     healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          "pg_isready -U $$AUTH_POSTGRES_USER -d $$AUTH_POSTGRES_DB_NAME"
-        ]
+      test: pg_isready -U ${AUTH_POSTGRES_USER} -d ${AUTH_POSTGRES_DB_NAME}
       interval: 10s
-      timeout: 5s
+      timeout: 30s
       retries: 5
-      start_period: 10s
+      start_period: 30s
     restart: unless-stopped
-    command: -p 5433
     ports:
-      - 5433:${AUTH_PGPORT}
+      - 5433:${AUTH_POSTGRES_PORT}
     networks:
       - backend
 
@@ -72,14 +67,14 @@ services:
       - backend
       # - frontend
 
-  auth-service:
-    container_name: auth-service
+  auth:
+    container_name: auth
     volumes:
-      - ./authservice/src:/app
+      - ./auth/src:/app
     env_file: .env
     build:
       context: ./
-      dockerfile: ./auth/Dockerfile.
+      dockerfile: ./auth/Dockerfile
     command: bash -c "cd /app && alembic upgrade head && uvicorn main:app --reload --workers 1 --host 0.0.0.0 --port 8001"
     depends_on:
       users-db:
@@ -93,7 +88,7 @@ services:
     container_name: image_core
     volumes:
       - ./image_core/src:/app
-      - ./datasets:/app/datasets
+      - ./app_data/datasets:/app/datasets
       - ./staticfiles:/app/downloads
     env_file:
       - .env
@@ -117,6 +112,8 @@ services:
     command: bash -c "uvicorn main:app --reload --workers 1 --host 0.0.0.0 --port 8000"
     ports:
       - 8003:8000
+    networks:
+      - backend
 
   limiter:
     image: redis:latest
@@ -151,10 +148,10 @@ services:
   nginx-proxi-pass:
     restart: always
     build:
-      context: ./
+      context: .
       dockerfile: nginx/Dockerfile
     depends_on:
-      - auth-service
+      - auth
     ports:
       - 80:80
     networks:

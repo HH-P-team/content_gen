@@ -63,11 +63,11 @@ async def before_request(request: Request, call_next):
     return response
 
 
-app.include_router(
-    authorization.router,
-    prefix="/api/v1/authorization",
-    tags=["authorization"],
-)
+# app.include_router(
+#     authorization.router,
+#     prefix="/api/v1/authorization",
+#     tags=["authorization"],
+# )
 
 
 if __name__ == "__main__":
