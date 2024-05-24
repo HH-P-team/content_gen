@@ -24,6 +24,7 @@ class Subject(Base, Mixin):
                                                      cascade='all, delete-orphan')
     image: Mapped['Image'] = relationship(back_populates='subject', 
                                           lazy='selectin',
+                                          single_parent=True,
                                           cascade='all, delete-orphan')
     
     def __repr__(self) -> str:
@@ -57,6 +58,7 @@ class Post(Base, Mixin):
     product_id: Mapped[int] = mapped_column(ForeignKey('product.id'))
     product: Mapped['Product'] = relationship(back_populates='posts')
     image: Mapped['Image'] = relationship(back_populates='post',
+                                          lazy='selectin',
                                           cascade='all, delete-orphan')
 
     def __repr__(self) -> str:
@@ -68,11 +70,17 @@ class Image(Base, Mixin):
 
     uuid: Mapped[UUID] = mapped_column(Uuid)
     subject_id: Mapped[int] = mapped_column(ForeignKey('subject.id'), nullable=True)
-    subject: Mapped['Subject'] = relationship(back_populates='image')
+    subject: Mapped['Subject'] = relationship(back_populates='image',
+                                              cascade='all, delete-orphan',
+                                              single_parent=True)
     product_id: Mapped[int] = mapped_column(ForeignKey('product.id'), nullable=True)
-    product: Mapped['Product'] = relationship(back_populates='image')
+    product: Mapped['Product'] = relationship(back_populates='image',
+                                              cascade='all, delete-orphan',
+                                              single_parent=True)
     post_id: Mapped[int] = mapped_column(ForeignKey('post.id'), nullable=True)
-    post: Mapped['Post'] = relationship(back_populates='image')
+    post: Mapped['Post'] = relationship(back_populates='image',
+                                        cascade='all, delete-orphan',
+                                        single_parent=True)
     in_progress: Mapped[bool] = mapped_column(Boolean, default=True, nullable=True)
 
     def __repr__(self) -> str:
