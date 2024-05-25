@@ -35,6 +35,8 @@ class MyConfig(BaseSettings):
     fb_api_key: str = "api_key"
     fb_secret_key: str = "secret_key"
 
+    giga_key: str = "giga_key"
+
 
 settings = MyConfig()
 settings.sd_keys.split(",")

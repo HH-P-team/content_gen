@@ -19,9 +19,11 @@ from services.imageservice import (
     get_generate_sd_service,
     get_generate_fb_service,
 )
-from services.prefecioner import prefecioner
+
 from imageprocessor.classifier import classifier_matrix
+from services.prefecioner import prefecioner
 from services.imagingservice import acopy
+from services.promtprocessor import VladlenTatarsky, get_promt_service
 
 imaging_router = APIRouter()
 
@@ -35,6 +37,7 @@ async def get_image(
     input: UserReq = Depends(),
     generate_sd: list[StableDiffusion] = Depends(get_generate_sd_service),
     generate_fb: Fusionbrain = Depends(get_generate_fb_service),
+    promt_service: VladlenTatarsky = Depends(get_promt_service),
 ) -> dict:
     start = time.time()
     for filename in await aos.listdir(settings.path_to_downloads):
@@ -47,13 +50,14 @@ async def get_image(
     #     prefecioner(gen, input.text, negative, "sd") for gen in generate_sd
     # ]
 
-    classificator = classifier_matrix.get(input.category)
+    promts = promt_service.generate_promts(input.text)
 
+    classificator = classifier_matrix.get(input.category)
     if classificator:
         tasks.extend(
             [
-                prefecioner(generate_fb, input.text, negative, "fb")
-                for i in range(5)
+                prefecioner(generate_fb, promt, negative, "fb")
+                for promt in promts
             ]
         )
         await asyncio.gather(*tasks)
@@ -63,7 +67,7 @@ async def get_image(
         )
         files = list(classification.keys())
     else:
-        tasks = [prefecioner(generate_fb, input.text, negative, "fb")]
+        tasks = [prefecioner(generate_fb, promts[0], negative, "fb")]
         await asyncio.gather(*tasks)
         classification = {}
         files = await aos.listdir(settings.path_to_downloads)
@@ -78,7 +82,7 @@ async def get_image(
         await acopy(down_file, art_file)
 
         return {
-            "promt": input.text,
+            "promt": promts,
             "time": total_time,
             "classification": classification,
             "path": art_file,
