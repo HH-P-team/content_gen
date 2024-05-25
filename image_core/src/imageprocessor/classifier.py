@@ -20,8 +20,6 @@ class Classifier:
         classification = {}
         for proc in self.processors:
             result = proc.execute(object_path)
-            print("!!!!")
-            print(result)
             for avg, file_name in result:
                 if file_name in classification:
                     classification[file_name] += float(avg)
