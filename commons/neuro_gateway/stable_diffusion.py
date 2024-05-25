@@ -58,5 +58,5 @@ class StableDiffusion(API):
 
         res = self.get_image_payload_by_id(id)
 
-        with open(f'{filepath}/{filename}.png', 'wb') as f:
+        with open(f'{filepath}/{filename}.jpg', 'wb') as f:
             f.write(res)
