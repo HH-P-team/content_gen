@@ -35,6 +35,12 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - ./app_data/auth_pgdata:/var/lib/postgresql/data/pgdata
+    healthcheck:
+      test: pg_isready -U ${AUTH_POSTGRES_USER} -d ${AUTH_POSTGRES_DB_NAME}
+      interval: 10s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
     restart: unless-stopped
     command: -p ${AUTH_POSTGRES_PORT}
     expose:

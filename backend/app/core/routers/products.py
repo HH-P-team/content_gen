@@ -11,11 +11,12 @@ from commons.models import Product, Subject, Image
 from commons.neuro_gateway.mistral import Mistral
 from commons.neuro_gateway.stable_diffusion import StableDiffusion
 from commons.utils import download_product_image
+from commons.core.image_core import ImageCore
 
 
+image_core = ImageCore()
 settings = get_settings()
 sd = StableDiffusion(settings.mistral_api_key)
-
 
 router = APIRouter()
 
@@ -72,10 +73,10 @@ async def create_product(
     product = await db.scalar(select(Product).where(Product.name == product_name))
 
     background_tasks.add_task(download_product_image,
-                              sd,
+                              image_core,
                               db,
                               product_name,
-                              settings.staticfiles_path,
+                            #   settings.staticfiles_path,
                               img_uuid)
 
     

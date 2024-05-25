@@ -32,8 +32,7 @@ const mainReducer = (
 		addProductMenuState: false,
 		addPostMenuState: false,
 		subjects: [],
-		// products: {},
-		// posts: {},
+		posts: [],
 	},
 	action
 ) => {
@@ -74,6 +73,18 @@ const mainReducer = (
 			return {
 				...prevState,
 				subjects: value,	
+			};
+
+		case 'CASE_ADD_POSTS':
+			return {
+				...prevState,
+				posts: [...value, ...prevState.posts],
+			};
+
+		case 'CASE_SET_POSTS':
+			return {
+				...prevState,
+				posts: value,
 			};
 
 		case 'CASE_ADD_PRODUCT':

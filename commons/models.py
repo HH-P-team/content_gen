@@ -52,8 +52,8 @@ class Product(Base, Mixin):
 class Post(Base, Mixin):
     __tablename__ = 'post'
 
-    description: Mapped[str] = mapped_column(String(1000), nullable=True)
-    query: Mapped[str] = mapped_column(String(1000))
+    description: Mapped[str] = mapped_column(String(10000), nullable=True)
+    query: Mapped[str] = mapped_column(String(10000))
     product_id: Mapped[int] = mapped_column(ForeignKey('product.id'))
     product: Mapped['Product'] = relationship(back_populates='posts', lazy='selectin')
     image: Mapped['Image'] = relationship(back_populates='post',

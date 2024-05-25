@@ -10,10 +10,12 @@ from commons.db import get_async_db
 from commons.models import Image, Subject
 from commons.neuro_gateway.stable_diffusion import StableDiffusion
 from commons.utils import download_subject_image
+from commons.core.image_core import ImageCore
 
 
 settings = get_settings()
 sd = StableDiffusion(settings.mistral_api_key)
+image_core = ImageCore()
 
 router = APIRouter()
 
@@ -54,10 +56,10 @@ async def create_subject(
     subject = await db.scalar(select(Subject).where(Subject.name == name))
 
     background_tasks.add_task(download_subject_image,
-                              sd,
+                              image_core,
                               db,
                               name,
-                              settings.staticfiles_path,
+                            #   settings.staticfiles_path,
                               img_uuid)
 
     return {

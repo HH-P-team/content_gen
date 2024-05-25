@@ -31,3 +31,4 @@ class ProductPostQuery(BaseModel):
 class PostsPostQuery(BaseModel):
     product_id: int
     prompt: str
+

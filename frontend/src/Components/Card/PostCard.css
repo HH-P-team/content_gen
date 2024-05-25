@@ -1,0 +1,48 @@
+.PostCard {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 95%;
+    margin: 10px;
+    padding: 1vh;
+    margin-bottom: 30px;
+    border-radius: 30px;
+    transition: transform 0.3s ease-in;
+    color: rgb(2, 3, 33);
+    background-color: rgba(0, 255, 255, 0.742);
+    /* aspect-ratio: 1 / 1; */
+  }
+
+  .PostCard:hover {
+    transform: scale(1.005);
+  }
+
+  .PostCardHeader {
+    font-size: 8vmin;
+    margin-bottom: 4vmin;
+    color: blueviolet;
+  }
+
+  .PostCardContainer {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .PostCardSection {
+    font-size: calc(10px + 2vmin);
+    width: 50%;
+    padding: 2vmin;
+    text-align: justify;
+  }
+
+  .ImageWrapperPost {
+    /* min-height: 80%; */
+    /* background-image: url('../../loading.gif'); */
+    background-color: aliceblue;
+    /* max-width: 40px; */
+    /* width: 50%; */
+    border-radius: 30px;
+    background-size: 100%;
+    border-color: rgb(47, 224, 224);
+    border-style: solid;
+  }

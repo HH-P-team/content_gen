@@ -11,6 +11,7 @@ import About from "./Components/Pages/About";
 import Help from "./Components/Pages/Help";
 import { useState, useEffect, useMemo, useContext } from "react";
 import getAllSubjects from "./api/subjects/subject.api";
+import getAllPosts from "./api/posts/post.api";
 import { useSelector, useDispatch } from "react-redux";
 import toast, { Toaster } from 'react-hot-toast';
 import Login from "./Components/Pages/Login";
@@ -43,8 +44,13 @@ export default function App() {
         getAllSubjects().then((data) => {
         if (data.status) {
             dispatch({ type: "CASE_SET_SUBJECTS", value: data.result });
-            // console.log(data.result);
         }});
+
+        getAllPosts().then((data) => {
+            if (data.status) {
+                dispatch({ type: "CASE_SET_POSTS", value: data.result });
+            }
+        })
 
         // fetch();
     }, []);
@@ -64,7 +70,7 @@ export default function App() {
                     <Route path="products" element={<Products data={subjects} />} />
                     <Route path="posts" element={<Posts data={subjects} />} />
                     <Route path="about" element={<About />} />
-                    <Route path="help" element={<Help />} />
+                    {/* <Route path="help" element={<Help />} /> */}
                 {/* <Route path="/">
                 {/* <Route element={<PrivateRoute redirectPath={"login"} />}> */}
                     {/* <Route path="profile" element={<Profile />} />

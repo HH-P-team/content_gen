@@ -12,9 +12,9 @@ export default function Menu(props) {
       <MenuButton path={"/subjects"} name="Категории" />
       <MenuButton path={"/products"} name="Продукты" />
       <MenuButton path={"/posts"} name="Рекламные посты" />
-      <MenuButton path={"/profile"} name="Профиль" />
+      {/* <MenuButton path={"/profile"} name="Профиль" /> */}
       <MenuButton path={"/about"} name="О проекте" />
-      <MenuButton path={"/help"} name="Помощь" />
+      {/* <MenuButton path={"/help"} name="Помощь" /> */}
       {/* {userData && <MenuButton path={"/logout"} name="Выйти" />} */}
     </div>
   );

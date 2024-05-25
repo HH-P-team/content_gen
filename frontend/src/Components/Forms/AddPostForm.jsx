@@ -2,6 +2,7 @@ import './AddPostForm.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { createPost } from '../../api/posts/post.api';
+import toast from 'react-hot-toast';
 
 export default function AddPostForm(props) {
 
@@ -10,6 +11,8 @@ export default function AddPostForm(props) {
     const [selectedSubject, setSelectedSubject] = useState([]);
     const [selectedProductId, setSelectedProductId] = useState('');
     const [text, setText] = useState('');
+
+    const dispatch = useDispatch();
     
 
     const selectSubjectHandle = (e) => {
@@ -26,10 +29,13 @@ export default function AddPostForm(props) {
     }
 
     const inputSubmit = (e) => {
-        console.log(selectedProductId);
-        console.log(text);
+        const toastId = toast.loading('Выполняется подготовка поста');
+        dispatch({ type: 'CASE_POST_MENUSTATE', value: !addPostMenuState })
         createPost(selectedProductId, text).then((data) =>{
-            console.log(data);
+            dispatch({ type: 'CASE_ADD_POSTS', value: [data.result] })
+            toast.success('Карточка готова!', {
+                id: toastId,
+            })
         });
         e.preventDefault();
     }
