@@ -4,7 +4,7 @@ import * as React from 'react';
 
 export default function Button(props) {
     return (
-        <button className="Button">
+        <button className="Button" disabled={props.disabled}>
             <div onClick={props.action}>{props.name}</div>
         </button>
     );

@@ -14,7 +14,6 @@ export default function AddSubjectForm(props) {
     const handleSubmit = (e, subjectName) => {
         
         dispatch({ type: 'CASE_SUBJECT_MENUSTATE', value: !visibleMenu })
-        console.log();
         if (!subjectName) {
             e.preventDefault();
             return

@@ -1,32 +1,25 @@
-// import './Subjects.css';
-import { useState, useEffect } from 'react';
-import getAllPosts from '../../api/posts/post.api';
+import './Posts.css';
 import PageWrapper from './PageWrapper';
 import Button from '../Button/Button';
+import AddPostForm from "../Forms/AddPostForm";
+import { useSelector, useDispatch } from 'react-redux';
 
-import Card from '../Card/Card';
+export default function Posts(props) {
 
-export default function Posts() {
+    const addPostMenuState = useSelector((state) => state.addPostMenuState);
+    const dispatch = useDispatch();
 
-    const [data, setData] = useState([]);
+    const buttonTitle = addPostMenuState? 'Закрыть форму' : 'Добавить пост';
 
-    useEffect(() => {
-      getAllPosts().then((data) => {
-        if (data.status) {
-          setData(data.result);
-        }
-      });
-    }, []);
-    
-  return (
-      <PageWrapper
-          pageName={'Рекламные посты'}
-          controlElement={<Button name={'Добавить'} action={() => console.log('trololo')}/>}
-          content={
-              <div className="Posts">
-                  {data.map((elem) => <Card name={elem.name} key={elem.id} />)}
-              </div>
-          }
-      />
-  );
+    return (
+        <PageWrapper
+            pageName={'Рекламные посты'}
+            controlElement={<Button name={buttonTitle} action={() => dispatch({ type: 'CASE_POST_MENUSTATE', value: !addPostMenuState })}/>}
+            content={
+                <div className="Posts">
+                    <AddPostForm data={props.data}/>
+                </div>
+            }
+        />
+    );
 }

@@ -62,7 +62,7 @@ export default function App() {
                 <Routes>
                     <Route path="*" element={<Subjects data={subjects} />} />
                     <Route path="products" element={<Products data={subjects} />} />
-                    <Route path="posts" element={<Posts />} />
+                    <Route path="posts" element={<Posts data={subjects} />} />
                     <Route path="about" element={<About />} />
                     <Route path="help" element={<Help />} />
                 {/* <Route path="/">

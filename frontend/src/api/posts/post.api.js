@@ -5,6 +5,15 @@ export const getAllPosts = async () => {
 	return data;
 };
 
-
+export const createPost = async (productId, text) => {
+	const { data } = await $host.post(
+		'/posts',
+		{
+			product_id: productId,
+			prompt: text,
+		}
+	);
+	return data;
+}
 
 export default getAllPosts;

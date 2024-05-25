@@ -79,17 +79,15 @@ const mainReducer = (
 		case 'CASE_ADD_PRODUCT':
 			const [ product ] = value;
 			const { subject_id: subjectId} = product;
-			console.log(subjectId);
-			console.log(prevState.subjects);
-			console.log(value);
 			const index = prevState.subjects.findIndex((el) => el.id === subjectId);
-			console.log(index);
-			// const updatedSubject = prevState.subjects.filter((subject) => subject.id === subjectId)[0]
 			return {
 				...prevState,
 				subjects: [
-					...prevState.subjects.filter((subject) => subject.id !== subjectId), 
-					...prevState.subjects.filter((subject) => subject.id === subjectId)
+					...prevState.subjects.slice(0, index),
+					{...prevState.subjects[index],
+						products: [...prevState.subjects[index].products, product],
+					}, 
+					...prevState.subjects.slice(index + 1)
 				]
 				};
 

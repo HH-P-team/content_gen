@@ -4,6 +4,7 @@ import Card from '../Card/Card';
 import AddSubjectForm from '../Forms/AddSubjectForm';
 
 export default function Subjects(props) {
+    // console.log(props);
     return (
         <PageWrapper
             pageName={'Категории продуктов'}
