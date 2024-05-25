@@ -21,6 +21,7 @@ from services.imageservice import (
 )
 from services.prefecioner import prefecioner
 from imageprocessor.classifier import classifier_matrix
+from services.imagingservice import acopy
 
 imaging_router = APIRouter()
 
@@ -46,59 +47,48 @@ async def get_image(
     #     prefecioner(gen, input.text, negative, "sd") for gen in generate_sd
     # ]
 
-    tasks.extend(
-        [
-            prefecioner(generate_fb, input.text, negative, "fb")
-            for i in range(5)
-        ]
-    )
+    classificator = classifier_matrix.get(input.category)
 
-    await asyncio.gather(*tasks)
+    if classificator:
+        tasks.extend(
+            [
+                prefecioner(generate_fb, input.text, negative, "fb")
+                for i in range(5)
+            ]
+        )
+        await asyncio.gather(*tasks)
 
-    if input.category == "free":
-
-        total_time = time.time() - start
-
-        files = aos.listdir(settings.path_to_downloads)[0]
-
-        if not input.file:
-
-            return {
-                "promt": input.text,
-                "time": total_time,
-                "classification": {},
-                "path": f"{settings.path_to_downloads}/{files[0]}",
-            }
-
-        else:
-
-            return FileResponse(
-                path=f"{settings.path_to_downloads}/{files[0]}",
-                filename=files[0],
-                media_type="multipart/form-data",
-            )
-
-    classification = classifier_matrix["dress"].get_classification(
-        settings.path_to_downloads
-    )
+        classification = classificator.get_classification(
+            settings.path_to_downloads
+        )
+        files = list(classification.keys())
+    else:
+        tasks = [prefecioner(generate_fb, input.text, negative, "fb")]
+        await asyncio.gather(*tasks)
+        classification = {}
+        files = await aos.listdir(settings.path_to_downloads)
 
     total_time = time.time() - start
 
-    files = list(classification.keys())
+    down_file = f"{settings.path_to_downloads}/{files[0]}"
+    art_file = f"{settings.path_to_arts}/{input.uuid}.jpg"
 
     if not input.file:
+
+        await acopy(down_file, art_file)
 
         return {
             "promt": input.text,
             "time": total_time,
             "classification": classification,
-            "path": f"{settings.path_to_downloads}/{files[0]}",
+            "path": art_file,
+            "uuid": input.uuid,
         }
 
     else:
 
         return FileResponse(
-            path=f"{settings.path_to_downloads}/{files[0]}",
+            path=down_file,
             filename=files[0],
             media_type="multipart/form-data",
         )

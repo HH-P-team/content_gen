@@ -17,7 +17,7 @@ Base = declarative_base()
 @declarative_mixin
 class BaseModelMixin:
 
-    __table_args__ = {"schema": settings.postgres_db_auth_schema}
+    __table_args__ = {"schema": settings.auth_postgres_scheme}
 
     uuid = Column(
         UUID(as_uuid=True),
@@ -60,7 +60,7 @@ class Users(Base, BaseModelMixin):
 
 class Account(Base):
     __tablename__ = "account"
-    __table_args__ = {"schema": settings.postgres_db_auth_schema}
+    __table_args__ = {"schema": settings.auth_postgres_scheme}
 
     uuid = Column(
         UUID(as_uuid=True),

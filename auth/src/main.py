@@ -7,9 +7,10 @@ from fastapi import FastAPI, Request, status
 from fastapi.responses import ORJSONResponse
 from fastapi_limiter import FastAPILimiter
 
-from starlette.middleware.sessions import SessionMiddleware
-from fastapi.middleware.cors import CORSMiddleware
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
+from alembic.config import Config
+from alembic import command
+
 
 from helpers.tracer import configure_tracer
 from core.settings import settings
@@ -19,15 +20,18 @@ from api.v1 import authorization
 configure_tracer()
 app = FastAPI(
     title=settings.project_name,
-    docs_url="/api/openapi",
-    openapi_url="/api/openapi.json",
+    docs_url="/auth/api/openapi",
+    openapi_url="/auth/api/openapi.json",
     default_response_class=ORJSONResponse,
 )
-FastAPIInstrumentor.instrument_app(app)
+# FastAPIInstrumentor.instrument_app(app)
 
 
 @app.on_event("startup")
 async def startup():
+    alembic_cfg = Config("alembic.ini")
+    command.upgrade(alembic_cfg, "head")
+
     cache_limiter = redis.from_url(
         f"redis://{settings.redis_host}:{settings.redis_port}",
         password=settings.redis_password,
@@ -37,37 +41,23 @@ async def startup():
     await FastAPILimiter.init(cache_limiter)
 
 
-app.add_middleware(SessionMiddleware, secret_key="secret!")
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials="*",
-    allow_methods=["*"],
-    allow_headers=["*"],
-    # allow_origins=[ALLOW_ORIGINS],
-    # allow_credentials=ALLOW_CREDENTIALS,
-    # allow_methods=[ALLOW_METHODS],
-    # allow_headers=[ALLOW_HEADERS],
-)
-
-
 @app.middleware("http")
 async def before_request(request: Request, call_next):
     response = await call_next(request)
     request_id = request.headers.get("X-Request-Id")
-    # if not request_id:
-    #     return ORJSONResponse(
-    #         status_code=status.HTTP_400_BAD_REQUEST,
-    #         content={"detail": "X-Request-Id is required"},
-    #     )
+    if not request_id:
+        return ORJSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={"detail": "X-Request-Id is required"},
+        )
     return response
 
 
-# app.include_router(
-#     authorization.router,
-#     prefix="/api/v1/authorization",
-#     tags=["authorization"],
-# )
+app.include_router(
+    authorization.router,
+    prefix="/auth/api/v1/authorization",
+    tags=["authorization"],
+)
 
 
 if __name__ == "__main__":
@@ -76,6 +66,5 @@ if __name__ == "__main__":
         "main:app",
         host=settings.auth_host,
         port=settings.auth_port,
-        log_level="debug",
         reload=True,
     )
