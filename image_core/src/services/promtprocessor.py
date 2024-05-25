@@ -28,7 +28,11 @@ class VladlenTatarsky:
         background_promts = []
         for promt in background:
 
-            if "извините" in promt.lower() or promt == "":
+            if (
+                "извините" in promt.lower()
+                or promt == ""
+                or "помочь" in promt.lower()
+            ):
                 continue
 
             background_promts.append(promt)
@@ -70,6 +74,7 @@ class VladlenTatarsky:
                 "извините" in promt.lower()
                 or promt == ""
                 or "объекты" in promt.lower()
+                or "помочь" in promt.lower()
             ):
                 continue
             sub_promt = promt.split(";")
@@ -156,7 +161,12 @@ class VladlenTatarsky:
                 break
 
         while len(promts) < 5:
-            promts.append(self.promt_creator(backgrounds[0], objs[0], sts[0]))
+            try:
+                promts.append(
+                    self.promt_creator(backgrounds[0], objs[0], sts[0])
+                )
+            except IndexError:
+                promts.append(text)
 
         return promts
 
