@@ -27,3 +27,7 @@ class SubjectResponseList(BaseModel):
 class ProductPostQuery(BaseModel):
     subject_id: int
     product_name: str
+
+class PostsPostQuery(BaseModel):
+    product_id: int
+    prompt: str

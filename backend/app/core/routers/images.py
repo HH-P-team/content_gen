@@ -18,37 +18,37 @@ sd = StableDiffusion(settings.mistral_api_key)
 router = APIRouter()
 
 
-@router.post('/')
-async def get_image(
-    request: ImageQuery,
-    background_tasks: BackgroundTasks,
-    db: AsyncSession = Depends(get_async_db),
-):
-    name = request.message
-    subject = await db.scalar(select(Subject).where(Subject.name == name))
+# @router.post('/')
+# async def get_image(
+#     request: ImageQuery,
+#     background_tasks: BackgroundTasks,
+#     db: AsyncSession = Depends(get_async_db),
+# ):
+#     name = request.message
+#     subject = await db.scalar(select(Subject).where(Subject.name == name))
 
-    if not subject:
-        return {
-            'status': False, 
-            'error': 'Категория с данным именем отсутствует',
-            }
+#     if not subject:
+#         return {
+#             'status': False, 
+#             'error': 'Категория с данным именем отсутствует',
+#             }
 
-    if subject.image:
-        return {
-            'status': True,
-            'result': subject.image,
-        }
+#     if subject.image:
+#         return {
+#             'status': True,
+#             'result': subject.image,
+#         }
 
-    else:
-        img_uuid = str(uuid.uuid4())
-        db.add(Image(uuid=img_uuid, subject=subject))
-        await db.commit()
-        image = await db.scalar(select(Image).where(Image.uuid == img_uuid))
+#     else:
+#         img_uuid = str(uuid.uuid4())
+#         db.add(Image(uuid=img_uuid, subject=subject))
+#         await db.commit()
+#         image = await db.scalar(select(Image).where(Image.uuid == img_uuid))
 
-        background_tasks.add_task(
-            download_image, sd, db, name, settings.staticfiles_path, img_uuid)
+#         background_tasks.add_task(
+#             download_image, sd, db, name, settings.staticfiles_path, img_uuid)
 
-    return {'status': True, 'result': image}
+#     return {'status': True, 'result': image}
 
 
 @router.post('/subject')

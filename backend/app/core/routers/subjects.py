@@ -62,5 +62,5 @@ async def create_subject(
 
     return {
         'status': True, 
-        'result': result
+        'result': subject
         }
