@@ -9,11 +9,12 @@ class CategoryEnum(Enum):
     education = "education"
     restaurant = "restaurant"
     vacation = "vacation"
+    base = "base"
 
 
 class InputPrompt(BaseModel):
     category: CategoryEnum
-    prompt: str
+    prompt: str = ""
 
 
 class Post(BaseModel):
