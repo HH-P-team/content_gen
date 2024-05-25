@@ -1,3 +1,5 @@
+import random
+
 from gigachat import GigaChat
 
 from core.settings import settings
@@ -143,6 +145,8 @@ class VladlenTatarsky:
 
         promts = []
 
+        backgrounds = [item for item in backgrounds if item != ""]
+
         for background in backgrounds:
             if background == "":
                 continue
@@ -154,7 +158,11 @@ class VladlenTatarsky:
                         continue
                     if len(promts) == 5:
                         break
-                    promts.append(self.promt_creator(background, obj, st))
+                    promts.append(
+                        self.promt_creator(
+                            random.choice(backgrounds), obj, st
+                        )
+                    )
                 if len(promts) == 5:
                     break
             if len(promts) == 5:
@@ -163,7 +171,11 @@ class VladlenTatarsky:
         while len(promts) < 5:
             try:
                 promts.append(
-                    self.promt_creator(backgrounds[0], objs[0], sts[0])
+                    self.promt_creator(
+                        random.choice(backgrounds),
+                        random.choice(objs),
+                        random.choice(sts),
+                    )
                 )
             except IndexError:
                 promts.append(text)
