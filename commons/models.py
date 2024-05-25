@@ -52,17 +52,16 @@ class Product(Base, Mixin):
 class Post(Base, Mixin):
     __tablename__ = 'post'
 
-    name: Mapped[str] = mapped_column(String(100))
-    description: Mapped[str] = mapped_column(String(1000))
+    description: Mapped[str] = mapped_column(String(1000), nullable=True)
     query: Mapped[str] = mapped_column(String(1000))
     product_id: Mapped[int] = mapped_column(ForeignKey('product.id'))
-    product: Mapped['Product'] = relationship(back_populates='posts')
+    product: Mapped['Product'] = relationship(back_populates='posts', lazy='selectin')
     image: Mapped['Image'] = relationship(back_populates='post',
                                           lazy='selectin',
                                           cascade='all, delete-orphan')
 
     def __repr__(self) -> str:
-        return f'Post(id={self.id}, name={self.name})'
+        return f'Post(id={self.id}, name={self.product.name}, query={self.query})'
     
 
 class Image(Base, Mixin):
@@ -73,14 +72,17 @@ class Image(Base, Mixin):
     subject: Mapped['Subject'] = relationship(back_populates='image',
                                               cascade='all, delete-orphan',
                                               single_parent=True)
+    
     product_id: Mapped[int] = mapped_column(ForeignKey('product.id'), nullable=True)
     product: Mapped['Product'] = relationship(back_populates='image',
                                               cascade='all, delete-orphan',
                                               single_parent=True)
+    
     post_id: Mapped[int] = mapped_column(ForeignKey('post.id'), nullable=True)
     post: Mapped['Post'] = relationship(back_populates='image',
                                         cascade='all, delete-orphan',
                                         single_parent=True)
+    
     in_progress: Mapped[bool] = mapped_column(Boolean, default=True, nullable=True)
 
     def __repr__(self) -> str:
