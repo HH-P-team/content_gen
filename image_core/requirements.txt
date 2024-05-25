@@ -17,3 +17,4 @@ gradio==4.31.4
 transformers==4.41.0
 tf-keras==2.16.0
 torch==2.3.0
+gigachat==0.1.27

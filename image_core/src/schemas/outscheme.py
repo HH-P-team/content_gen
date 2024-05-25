@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 
 class ImageResp(BaseModel):
-    promt: str
+    promt: list
     time: float
     classification: dict
     path: str
